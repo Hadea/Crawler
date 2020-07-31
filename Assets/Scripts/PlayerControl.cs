@@ -7,7 +7,16 @@ public class PlayerControl : MonoBehaviour
     [SerializeField]
     private float MovementSpeed;
 
+    [SerializeField]
+    private GameObject Bullet;
+    [SerializeField]
+    private Transform MuzzlePosition;
 
+    [SerializeField]
+    private float BulletSpeed;
+    [SerializeField]
+    private float BulletCooldown;
+    private float lastBulletFired;
     void Update()
     {
 
@@ -29,10 +38,24 @@ public class PlayerControl : MonoBehaviour
         Vector3 target = new Vector3();
         if (plane.Raycast(ray, out hit))
         {
-             target = ray.origin + ray.direction * hit;
+            target = ray.origin + ray.direction * hit;
         }
 
         transform.LookAt(target);
         #endregion
+
+        #region Shoot
+
+        if (Input.GetButton("Fire1") && Time.time > lastBulletFired + BulletCooldown )
+        {
+            lastBulletFired = Time.time;
+            GameObject newBullet = GameObject.Instantiate(Bullet);
+            newBullet.transform.position = MuzzlePosition.position;
+            newBullet.transform.rotation = transform.rotation;
+            newBullet.GetComponent<Rigidbody>().AddForce(transform.forward * BulletSpeed);
+        }
+
+        #endregion
+
     }
 }
