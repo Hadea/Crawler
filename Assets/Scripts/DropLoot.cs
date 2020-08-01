@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class DropLoot : MonoBehaviour
 {
@@ -12,11 +10,16 @@ public class DropLoot : MonoBehaviour
     }
 
     [SerializeField]
-    private LootDropChance[] loot;
+    private LootDropChance[] loot = new LootDropChance[0];
 
-    private void OnDestroy()
+    public void Drop()
     {
-        Debug.Log("drop loot: " + GetLootByChance());
+        GameObject loot = GetLootByChance();
+        if (loot != null)
+        {
+            // spawn loot on death
+            GameObject.Instantiate(loot, transform.position, transform.rotation);
+        }
     }
 
     private GameObject GetLootByChance()
@@ -30,6 +33,7 @@ public class DropLoot : MonoBehaviour
 
         int random = Random.Range(0, total);
         total = 0;
+        // check if random is smaller than our current chance
         foreach (var chance in loot)
         {
             if (random <= total)

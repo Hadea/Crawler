@@ -30,6 +30,16 @@ public class Health : MonoBehaviour
     {
         // destroy object
         currentHealth = 0;
+        DropLoot lootDropping = GetComponent<DropLoot>();
+        if (lootDropping != null)
+        {
+            lootDropping.Drop();
+        }
         Destroy(gameObject);
+    }
+
+    public int GetCurrent()
+    {
+        return currentHealth;
     }
 }

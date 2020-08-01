@@ -4,9 +4,7 @@
 public class Looting : MonoBehaviour
 {
     [SerializeField]
-    private string[] lootTags;
-
-    public int score;
+    private string[] lootTags = new string[0];
 
     private void OnTriggerEnter(Collider other)
     {
@@ -38,6 +36,9 @@ public class Looting : MonoBehaviour
     private void CollectCoin()
     {
         // increase score
-        score++;
+        if (UIManager.manager != null)
+        {
+            UIManager.manager.score++;
+        }
     }
 }

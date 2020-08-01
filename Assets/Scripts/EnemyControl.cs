@@ -10,20 +10,20 @@ public class EnemyControl : MonoBehaviour
     private float aggroRange = 15f;
 
     [SerializeField]
-    private LayerMask layerMaskForPlayerSearch;
+    private LayerMask layerMaskForPlayerSearch = new LayerMask();
 
     [SerializeField]
     private float rotationSpeed = 20f;
 
     [SerializeField]
-    private GameObject Bullet;
+    private GameObject Bullet = null;
     [SerializeField]
-    private Transform MuzzlePosition;
+    private Transform MuzzlePosition = null;
 
     [SerializeField]
-    private float BulletSpeed;
+    private float BulletSpeed = 30f;
     [SerializeField]
-    private float BulletCooldown;
+    private float BulletCooldown = 1f;
     private float lastBulletFired;
 
     void Start()
@@ -37,14 +37,14 @@ public class EnemyControl : MonoBehaviour
         if (PlayerControl.player != null && Vector3.Distance(PlayerControl.player.transform.position, transform.position) < aggroRange)
         {
             // Check if player is visible from own position
-            Ray ray = new Ray(transform.position, PlayerControl.player.transform.position - transform.position);
+            Ray ray = new Ray(transform.position + Vector3.up, PlayerControl.player.transform.position - transform.position);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, 100f, layerMaskForPlayerSearch))
             {
                 // If player is found, start shooting
                 if (hit.transform.GetComponent<PlayerControl>())
                 {
-                    Debug.DrawLine(transform.position, hit.point, Color.green);
+                    Debug.DrawLine(ray.origin, hit.point, Color.green);
 
                     // rotation for looking towards the player
                     Quaternion lookRotation = Quaternion.LookRotation(hit.transform.position - transform.position);
@@ -75,9 +75,7 @@ public class EnemyControl : MonoBehaviour
         if (Time.time > lastBulletFired + BulletCooldown)
         {
             lastBulletFired = Time.time;
-            GameObject newBullet = GameObject.Instantiate(Bullet);
-            newBullet.transform.position = MuzzlePosition.position;
-            newBullet.transform.rotation = transform.rotation;
+            GameObject newBullet = GameObject.Instantiate(Bullet, MuzzlePosition.position, transform.rotation);
             newBullet.GetComponent<Rigidbody>().AddForce(transform.forward * BulletSpeed);
         }
     }

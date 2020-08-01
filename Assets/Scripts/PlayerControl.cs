@@ -1,44 +1,62 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
     public static PlayerControl player;
 
     [SerializeField]
-    private float MovementSpeed;
+    private float MovementSpeed = 5f;
 
     [SerializeField]
-    private GameObject Bullet;
+    private GameObject Bullet = null;
     [SerializeField]
-    private Transform MuzzlePosition;
+    private Transform MuzzlePosition = null;
 
     [SerializeField]
-    private float BulletSpeed;
+    private float BulletSpeed = 30f;
     [SerializeField]
-    private float BulletCooldown;
+    private float BulletCooldown = 0.2f;
     private float lastBulletFired;
 
-    void Start()
+    private void Awake()
     {
         player = this;
     }
 
     void Update()
     {
+        if (Time.timeScale < 0.01f)
+        {
+            return;
+        }
+        Movement();
+        Rotation();
 
-        #region Movement
+        if (Input.GetButton("Fire1") && Time.time > lastBulletFired + BulletCooldown)
+        {
+            Shoot();
+        }
+    }
 
+    private void OnDestroy()
+    {
+        if (UIManager.manager != null)
+        {
+            UIManager.manager.TogglePauseUI();
+        }
+    }
+
+    private void Movement()
+    {
         Vector3 movement = new Vector3();
         movement.x = MovementSpeed * Input.GetAxis("Horizontal");
         movement.z = MovementSpeed * Input.GetAxis("Vertical");
 
         transform.Translate(movement * Time.deltaTime, Space.World);
-        #endregion
+    }
 
-        #region Rotation
-
+    private void Rotation()
+    {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         Plane plane = new Plane(Vector3.up, Vector3.zero);
 
@@ -50,20 +68,12 @@ public class PlayerControl : MonoBehaviour
         }
 
         transform.LookAt(target);
-        #endregion
+    }
 
-        #region Shoot
-
-        if (Input.GetButton("Fire1") && Time.time > lastBulletFired + BulletCooldown )
-        {
-            lastBulletFired = Time.time;
-            GameObject newBullet = GameObject.Instantiate(Bullet);
-            newBullet.transform.position = MuzzlePosition.position;
-            newBullet.transform.rotation = transform.rotation;
-            newBullet.GetComponent<Rigidbody>().AddForce(transform.forward * BulletSpeed);
-        }
-
-        #endregion
-
+    private void Shoot()
+    {
+        lastBulletFired = Time.time;
+        GameObject newBullet = GameObject.Instantiate(Bullet, MuzzlePosition.position, transform.rotation);
+        newBullet.GetComponent<Rigidbody>().AddForce(transform.forward * BulletSpeed);
     }
 }
