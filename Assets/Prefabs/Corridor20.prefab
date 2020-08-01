@@ -11,6 +11,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wand5
       objectReference: {fileID: 0}
+    - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 7810854388157915097, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.5
@@ -68,6 +72,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wand4 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1460318695415531491, guid: 723eba08b37ce624aa4410102d05d8ab, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 5435318968708828744, guid: 723eba08b37ce624aa4410102d05d8ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -124,6 +132,10 @@ PrefabInstance:
     - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_Name
       value: Wand5 (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7810854388157915097, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_LocalPosition.x
@@ -226,6 +238,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wand10 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 7841090814763443038, guid: 7564491b0ceb05a4193d5feaa6f44496, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7564491b0ceb05a4193d5feaa6f44496, type: 3}
 --- !u!1001 &2042930142938796667
@@ -283,6 +299,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wand10 (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 7841090814763443038, guid: 7564491b0ceb05a4193d5feaa6f44496, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7564491b0ceb05a4193d5feaa6f44496, type: 3}
 --- !u!1001 &2470083532908279440
@@ -295,6 +315,10 @@ PrefabInstance:
     - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_Name
       value: Wand5 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7810854388157915097, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_LocalPosition.x
@@ -357,6 +381,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wand4
       objectReference: {fileID: 0}
+    - target: {fileID: 1460318695415531491, guid: 723eba08b37ce624aa4410102d05d8ab, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 5435318968708828744, guid: 723eba08b37ce624aa4410102d05d8ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -413,6 +441,10 @@ PrefabInstance:
     - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_Name
       value: Wand5 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7810854388157915097, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_LocalPosition.x
@@ -515,6 +547,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wand10 (6)
       objectReference: {fileID: 0}
+    - target: {fileID: 7841090814763443038, guid: 7564491b0ceb05a4193d5feaa6f44496, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7564491b0ceb05a4193d5feaa6f44496, type: 3}
 --- !u!1001 &3934711476352480818
@@ -572,6 +608,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wand10 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 7841090814763443038, guid: 7564491b0ceb05a4193d5feaa6f44496, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7564491b0ceb05a4193d5feaa6f44496, type: 3}
 --- !u!1001 &4264315636850239314
@@ -584,6 +624,10 @@ PrefabInstance:
     - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_Name
       value: Wand5 (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7810854388157915097, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_LocalPosition.x
@@ -662,6 +706,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Corridor20
       objectReference: {fileID: 0}
+    - target: {fileID: 2742574382635581206, guid: 19a6ba8605fed444393be9945d67fe66, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     - target: {fileID: 4592181538078719901, guid: 19a6ba8605fed444393be9945d67fe66, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2
@@ -710,6 +758,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6748337368868017730, guid: 19a6ba8605fed444393be9945d67fe66, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 6958216556099024438, guid: 19a6ba8605fed444393be9945d67fe66, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 7579197157470013780, guid: 19a6ba8605fed444393be9945d67fe66, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19a6ba8605fed444393be9945d67fe66, type: 3}
 --- !u!4 &8691521556876973777 stripped
@@ -727,6 +787,10 @@ PrefabInstance:
     - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_Name
       value: Wand5 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7810854388157915097, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_LocalPosition.x
@@ -788,6 +852,10 @@ PrefabInstance:
     - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_Name
       value: Wand5 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7810854388157915097, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_LocalPosition.x
@@ -890,6 +958,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wand10 (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 7841090814763443038, guid: 7564491b0ceb05a4193d5feaa6f44496, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7564491b0ceb05a4193d5feaa6f44496, type: 3}
 --- !u!1001 &8637920359311001815
@@ -947,6 +1019,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wand10 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 7841090814763443038, guid: 7564491b0ceb05a4193d5feaa6f44496, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7564491b0ceb05a4193d5feaa6f44496, type: 3}
 --- !u!1001 &9110829623145907580
@@ -959,6 +1035,10 @@ PrefabInstance:
     - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_Name
       value: Wand5 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3697318398829254258, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7810854388157915097, guid: 5a6e5fdd62366194b8b16ee087d54217, type: 3}
       propertyPath: m_LocalPosition.x

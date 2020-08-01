@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
+    public static PlayerControl player;
+
     [SerializeField]
     private float MovementSpeed;
 
@@ -17,6 +19,12 @@ public class PlayerControl : MonoBehaviour
     [SerializeField]
     private float BulletCooldown;
     private float lastBulletFired;
+
+    void Start()
+    {
+        player = this;
+    }
+
     void Update()
     {
 
