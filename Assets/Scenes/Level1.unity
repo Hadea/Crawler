@@ -166,15 +166,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1248cb5f6ab21424a8e219e54ed6dfeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomPrefabs:
-  - {fileID: 2742574382635581206, guid: 19a6ba8605fed444393be9945d67fe66, type: 3}
-  - {fileID: 5123115345138158333, guid: f5d6cfdca52c6dc449ad4574c6f6e4b7, type: 3}
-  - {fileID: 8472290511014528338, guid: e57837b758c65c64da7a66932c598a4c, type: 3}
-  - {fileID: 6161213580258420503, guid: c00db8a9f594ec94880bc53864981109, type: 3}
-  - {fileID: 2928950523556615112, guid: ff9ccf460265d814e9f7e15f7f9d3261, type: 3}
-  - {fileID: 7874827246042622624, guid: b1fd1e5f8e344ef4aa35857f42f8ab7f, type: 3}
-  - {fileID: 6867016414023530105, guid: f262a1af79df43e4595f15b4bed96385, type: 3}
-  - {fileID: 6414942296409638532, guid: c80491e8ead38614da8611542a76bfa4, type: 3}
+  rooms:
+  - prefab: {fileID: 2742574382635581206, guid: 19a6ba8605fed444393be9945d67fe66, type: 3}
+    weight: 3
+  - prefab: {fileID: 5123115345138158333, guid: f5d6cfdca52c6dc449ad4574c6f6e4b7, type: 3}
+    weight: 3
+  - prefab: {fileID: 8472290511014528338, guid: e57837b758c65c64da7a66932c598a4c, type: 3}
+    weight: 3
+  - prefab: {fileID: 6161213580258420503, guid: c00db8a9f594ec94880bc53864981109, type: 3}
+    weight: 2
+  - prefab: {fileID: 2928950523556615112, guid: ff9ccf460265d814e9f7e15f7f9d3261, type: 3}
+    weight: 2
+  - prefab: {fileID: 7874827246042622624, guid: b1fd1e5f8e344ef4aa35857f42f8ab7f, type: 3}
+    weight: 2
+  - prefab: {fileID: 6867016414023530105, guid: f262a1af79df43e4595f15b4bed96385, type: 3}
+    weight: 2
+  - prefab: {fileID: 6414942296409638532, guid: c80491e8ead38614da8611542a76bfa4, type: 3}
+    weight: 1
   closeoffPrefab: {fileID: 1476656330267150275, guid: 2aa61b71c8404ed4bbd152de62c06b84, type: 3}
   startingRoom: {fileID: 6897311621170725473}
   generate: 1

@@ -3,7 +3,15 @@ using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour
 {
-    public GameObject[] roomPrefabs;
+    [System.Serializable]
+    public struct DungeonRoomPrefabChance
+    {
+        public GameObject prefab;
+        [Range(0, 10)]
+        public int weight;
+    }
+
+    public DungeonRoomPrefabChance[] rooms;
     public GameObject closeoffPrefab;
 
     public DungeonRoom startingRoom;
@@ -24,33 +32,27 @@ public class DungeonGenerator : MonoBehaviour
     [ContextMenu("Generate")]
     private void Generate()
     {
-        if (generatedRooms != null)
-        {
-            foreach (var room in generatedRooms)
-            {
-                Destroy(room);
-            }
-            generatedRooms.Clear();
-        }
-        else
-        {
-            generatedRooms = new List<GameObject>();
-        }
+        Clear();
         List<RoomConnector> openConnections = new List<RoomConnector>();
         openConnections.AddRange(startingRoom.roomConnectors);
+        int weightsTotal = 0;
+        foreach (var dungeonRoom in rooms)
+        {
+            weightsTotal += dungeonRoom.weight;
+        }
         for (int i = 0; i < roomsNumber; i++)
         {
             if (openConnections.Count == 0)
             {
-                print("Generation blocked. No open connections left.");
+                Debug.LogWarning("Generation blocked. No open connections left.", this);
                 return;
             }
             int random = Random.Range(0, openConnections.Count);
             RoomConnector randomConnectorStart = openConnections[random];
             openConnections.RemoveAt(random);
 
-            random = Random.Range(0, roomPrefabs.Length);
-            generatedRooms.Add(Instantiate(roomPrefabs[random]));
+            random = Random.Range(0, rooms.Length);
+            generatedRooms.Add(Instantiate(GetRandomRoom(weightsTotal)));
             DungeonRoom roomInstance = generatedRooms[generatedRooms.Count - 1].GetComponent<DungeonRoom>();
 
             random = Random.Range(0, roomInstance.roomConnectors.Length);
@@ -74,6 +76,39 @@ public class DungeonGenerator : MonoBehaviour
             DungeonRoom closeoffInstance = generatedRooms[generatedRooms.Count - 1].GetComponent<DungeonRoom>();
             RoomConnector connectorEnd = closeoffInstance.roomConnectors[0];
             PlaceNewRoom(connectorStart, closeoffInstance, connectorEnd);
+        }
+    }
+
+    private GameObject GetRandomRoom(int total)
+    {
+        int random = Random.Range(0, total);
+        total = 0;
+
+        foreach (var chance in rooms)
+        {
+            if (random <= total)
+            {
+                return chance.prefab;
+            }
+            total += chance.weight;
+        }
+        throw new System.Exception("No loot found");
+    }
+
+    [ContextMenu("Clear")]
+    private void Clear()
+    {
+        if (generatedRooms != null)
+        {
+            foreach (var room in generatedRooms)
+            {
+                Destroy(room);
+            }
+            generatedRooms.Clear();
+        }
+        else
+        {
+            generatedRooms = new List<GameObject>();
         }
     }
 
