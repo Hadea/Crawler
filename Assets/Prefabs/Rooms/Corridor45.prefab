@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6bbbdf5cd76ef1469ee98f2a7a9cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  other: {fileID: 0}
 --- !u!1 &4743560791510632059
 GameObject:
   m_ObjectHideFlags: 0
@@ -86,6 +87,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6bbbdf5cd76ef1469ee98f2a7a9cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  other: {fileID: 0}
 --- !u!1 &8472290511014528338
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,7 +99,7 @@ GameObject:
   - component: {fileID: 8472290511014528339}
   - component: {fileID: 2581302340550673974}
   m_Layer: 0
-  m_Name: Corridor40
+  m_Name: Corridor45
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,7 +112,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8472290511014528338}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -161,6 +163,9 @@ MonoBehaviour:
   roomConnectors:
   - {fileID: 1508690604442865439}
   - {fileID: 309568578473788435}
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 22.5, y: 0, z: 5}
 --- !u!1001 &8472290509311191805
 PrefabInstance:
   m_ObjectHideFlags: 0

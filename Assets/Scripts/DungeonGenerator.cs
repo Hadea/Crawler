@@ -18,8 +18,9 @@ public class DungeonGenerator : MonoBehaviour
 
     public bool generate;
     public int roomsNumber = 30;
+    public int maxRetries = 5;
 
-    private List<GameObject> generatedRooms;
+    private List<DungeonRoom> generatedRooms;
 
     void Start()
     {
@@ -33,6 +34,7 @@ public class DungeonGenerator : MonoBehaviour
     private void Generate()
     {
         Clear();
+        generatedRooms.Add(startingRoom);
         List<RoomConnector> openConnections = new List<RoomConnector>();
         openConnections.AddRange(startingRoom.roomConnectors);
         int weightsTotal = 0;
@@ -47,33 +49,84 @@ public class DungeonGenerator : MonoBehaviour
                 Debug.LogWarning("Generation blocked. No open connections left.", this);
                 return;
             }
-            int random = Random.Range(0, openConnections.Count);
-            RoomConnector randomConnectorStart = openConnections[random];
-            openConnections.RemoveAt(random);
 
-            random = Random.Range(0, rooms.Length);
-            generatedRooms.Add(Instantiate(GetRandomRoom(weightsTotal)));
-            DungeonRoom roomInstance = generatedRooms[generatedRooms.Count - 1].GetComponent<DungeonRoom>();
-
-            random = Random.Range(0, roomInstance.roomConnectors.Length);
-            RoomConnector randomConnectorEnd = roomInstance.roomConnectors[random];
-
-            PlaceNewRoom(randomConnectorStart, roomInstance, randomConnectorEnd);
-
-            foreach (var connector in roomInstance.roomConnectors)
+            RoomConnector randomConnectorStart;
+            DungeonRoom newRoom;
+            RoomConnector randomConnectorEnd;
+            int openIndex;
+            bool fits;
+            int retries = maxRetries;
+            do
             {
-                if (connector != randomConnectorEnd)
+                fits = true;
+                openIndex = Random.Range(0, openConnections.Count);
+                randomConnectorStart = openConnections[openIndex];
+
+                int randomIndex = Random.Range(0, rooms.Length);
+
+                GameObject roomInstance = Instantiate(GetRandomRoom(weightsTotal));
+                newRoom = roomInstance.GetComponent<DungeonRoom>();
+
+                randomIndex = Random.Range(0, newRoom.roomConnectors.Length);
+                randomConnectorEnd = newRoom.roomConnectors[randomIndex];
+
+                PlaceNewRoom(randomConnectorStart, newRoom, randomConnectorEnd);
+
+                Bounds a = newRoom.bounds;
+                if (Mathf.Abs(newRoom.transform.rotation.eulerAngles.y) / 90f % 2f > 0.9f)
                 {
-                    openConnections.Add(connector);
+                    a.size = a.size.ToVector3ZYX();
+                    a.center = a.center.ToVector3ZYX();
+                }
+                a.size *= 0.999f;
+                a.center += newRoom.transform.position;
+                foreach (var otherRoom in generatedRooms)
+                {
+                    Bounds b = otherRoom.bounds;
+                    if (Mathf.Abs(otherRoom.transform.rotation.eulerAngles.y) / 90f % 2f > 0.9f)
+                    {
+                        b.size = b.size.ToVector3ZYX();
+                        b.center = b.center.ToVector3ZYX();
+                    }
+                    b.size *= 0.999f;
+                    b.center += otherRoom.transform.position;
+
+                    if (b.Intersects(a))
+                    {
+                        fits = false;
+                        Destroy(roomInstance);
+                        retries--;
+                        break;
+                    }
+                }
+            } while (!fits && retries > 0);
+
+            if (fits)
+            {
+                generatedRooms.Add(newRoom);
+                openConnections.RemoveAt(openIndex);
+
+                foreach (var connector in newRoom.roomConnectors)
+                {
+                    if (connector != randomConnectorEnd)
+                    {
+                        openConnections.Add(connector);
+                    }
                 }
             }
+            else
+            {
+                Debug.LogWarning("Generation blocked. No space for rooms found.", this);
+            }
         }
+
         for (int i = openConnections.Count - 1; i >= 0; i--)
         {
             RoomConnector connectorStart = openConnections[i];
             openConnections.RemoveAt(i);
-            generatedRooms.Add(Instantiate(closeoffPrefab));
-            DungeonRoom closeoffInstance = generatedRooms[generatedRooms.Count - 1].GetComponent<DungeonRoom>();
+            GameObject instance = Instantiate(closeoffPrefab);
+            DungeonRoom closeoffInstance = instance.GetComponent<DungeonRoom>();
+            generatedRooms.Add(closeoffInstance);
             RoomConnector connectorEnd = closeoffInstance.roomConnectors[0];
             PlaceNewRoom(connectorStart, closeoffInstance, connectorEnd);
         }
@@ -86,13 +139,13 @@ public class DungeonGenerator : MonoBehaviour
 
         foreach (var chance in rooms)
         {
+            total += chance.weight;
             if (random <= total)
             {
                 return chance.prefab;
             }
-            total += chance.weight;
         }
-        throw new System.Exception("No loot found");
+        throw new System.Exception("No room found");
     }
 
     [ContextMenu("Clear")]
@@ -102,26 +155,29 @@ public class DungeonGenerator : MonoBehaviour
         {
             foreach (var room in generatedRooms)
             {
-                Destroy(room);
+                if (room != startingRoom)
+                {
+                    Destroy(room.gameObject);
+                }
             }
             generatedRooms.Clear();
         }
         else
         {
-            generatedRooms = new List<GameObject>();
+            generatedRooms = new List<DungeonRoom>();
         }
     }
 
     private static void PlaceNewRoom(RoomConnector randomConnectorStart, DungeonRoom roomInstance, RoomConnector randomConnectorEnd)
     {
-        randomConnectorStart.other = randomConnectorEnd;
-        randomConnectorEnd.other = randomConnectorStart;
-
         Vector3 newRoomOffset = (roomInstance.transform.position - randomConnectorEnd.transform.position);
         roomInstance.transform.position = randomConnectorStart.transform.position + newRoomOffset;
 
         float angle = Vector3.SignedAngle(randomConnectorStart.transform.forward, randomConnectorEnd.transform.forward, Vector3.up);
         angle = -angle + 180f;
         roomInstance.transform.RotateAround(randomConnectorStart.transform.position, Vector3.up, angle);
+
+        randomConnectorStart.other = randomConnectorEnd;
+        randomConnectorEnd.other = randomConnectorStart;
     }
 }

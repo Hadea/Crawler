@@ -36,11 +36,11 @@ public class DropLoot : MonoBehaviour
         // check if random is smaller than our current chance
         foreach (var chance in loot)
         {
+            total += chance.dropChance;
             if (random <= total)
             {
                 return chance.lootObject;
             }
-            total += chance.dropChance;
         }
         throw new System.Exception("No loot found");
     }

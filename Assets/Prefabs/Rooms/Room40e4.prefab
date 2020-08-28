@@ -248,6 +248,9 @@ MonoBehaviour:
   - {fileID: 2899102539290638668}
   - {fileID: 6055060002811831578}
   - {fileID: 8477836392710912862}
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 20, y: 0, z: 20}
 --- !u!1 &8528157637578487718
 GameObject:
   m_ObjectHideFlags: 0
