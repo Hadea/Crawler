@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   somethingToSpawn: {fileID: 3436743696104757814, guid: 9f0b9e8804300d34883d4ec5cda510d5, type: 3}
   spawnCounter: 10
-  spawnCooldown: 2
+  spawnCooldown: 0.5
   activationRange: 15
   spawnArea: {fileID: 2102057984143212382}
 --- !u!1 &2102057984143212383
@@ -108,7 +108,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a1e41495f815f2f408de2b055719f731, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

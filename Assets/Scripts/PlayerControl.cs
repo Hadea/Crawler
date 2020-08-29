@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -16,11 +17,19 @@ public class PlayerControl : MonoBehaviour
     private float BulletSpeed = 30f;
     [SerializeField]
     private float BulletCooldown = 0.2f;
-    private float lastBulletFired;
+    private float lastFired;
+
+    [SerializeField]
+    private Animation HitAnimator = null;
+    [SerializeField]
+    private Transform HitArea = null;
+
+    private NavMeshAgent agent;
 
     private void Awake()
     {
         player = this;
+        agent = GetComponent<NavMeshAgent>();
     }
 
     void Update()
@@ -32,10 +41,15 @@ public class PlayerControl : MonoBehaviour
         Movement();
         Rotation();
 
-        if (Input.GetButton("Fire1") && Time.time > lastBulletFired + BulletCooldown)
+        if (Input.GetButton("Fire1") && !HitAnimator.isPlaying)
+        {
+            Attack();
+        }
+        else if (Input.GetButton("Fire2") && Time.time > lastFired + BulletCooldown)
         {
             Shoot();
         }
+
     }
 
     private void OnDestroy()
@@ -52,7 +66,8 @@ public class PlayerControl : MonoBehaviour
         movement.x = MovementSpeed * Input.GetAxis("Horizontal");
         movement.z = MovementSpeed * Input.GetAxis("Vertical");
 
-        transform.Translate(movement * Time.deltaTime, Space.World);
+        //transform.Translate(movement * Time.deltaTime, Space.World);
+        agent.Move(movement * Time.deltaTime);
     }
 
     private void Rotation()
@@ -72,8 +87,32 @@ public class PlayerControl : MonoBehaviour
 
     private void Shoot()
     {
-        lastBulletFired = Time.time;
+        lastFired = Time.time;
         GameObject newBullet = GameObject.Instantiate(Bullet, MuzzlePosition.position, transform.rotation);
         newBullet.GetComponent<Rigidbody>().AddForce(transform.forward * BulletSpeed);
+    }
+
+    private void Attack()
+    {
+        HitAnimator.Play();
+        Collider[] colliders = Physics.OverlapBox(HitArea.transform.position, HitArea.transform.localScale * 0.5f, HitArea.transform.rotation);
+        foreach (var collider in colliders)
+        {
+            if (!collider.isTrigger)
+            {
+                OnBoxEnter(collider);
+            }
+        }
+    }
+
+    private void OnBoxEnter(Collider other)
+    {
+        // check if something with health has been hit
+        Health health = other.transform.GetComponent<Health>();
+        if (health != null)
+        {
+            // deal damage to target
+            health.TakeDamage();
+        }
     }
 }

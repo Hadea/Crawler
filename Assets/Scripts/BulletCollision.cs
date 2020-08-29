@@ -1,14 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Rigidbody))]
 public class BulletCollision : MonoBehaviour
 {
     [SerializeField]
     private GameObject hitEffect = null;
-
+    [SerializeField]
+    private float offset = 0.04f;
+    [SerializeField]
+    private bool canGetStuck = false;
+    [SerializeField]
+    private float stuckTime = 5f;
     private Rigidbody rigid;
 
     private void Start()
@@ -26,10 +28,24 @@ public class BulletCollision : MonoBehaviour
             health.TakeDamage();
         }
         // spawn hit effect on current position
-        float offset = rigid.velocity.magnitude;
-        GameObject.Instantiate(hitEffect, transform.position - transform.forward * offset * 0.04f, transform.rotation * Quaternion.Euler(Vector3.up * 180f));
+        if (hitEffect != null)
+        {
+            float velocity = rigid.velocity.magnitude;
+            GameObject.Instantiate(hitEffect, transform.position - transform.forward * velocity * offset, transform.rotation * Quaternion.Euler(Vector3.up * 180f));
+        }
+        else if (canGetStuck)
+        {
+            rigid.isKinematic = true;
+            gameObject.AddComponent<DestroyAfterTime>().timeToLive = stuckTime;
+            transform.position += -transform.forward * offset;
+            Destroy(GetComponent<Collider>());
+            Destroy(this);
+        }
 
-        // destroy bullet
-        Destroy(gameObject);
+        if (!canGetStuck)
+        {
+            // destroy bullet
+            Destroy(gameObject);
+        }
     }
 }

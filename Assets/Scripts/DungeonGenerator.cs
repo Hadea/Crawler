@@ -26,12 +26,14 @@ public class DungeonGenerator : MonoBehaviour
     {
         if (generate)
         {
-            Generate();
+            for (int retries = 0; retries < maxRetries && !Generate(); retries++)
+            {
+            }
         }
     }
 
     [ContextMenu("Generate")]
-    private void Generate()
+    private bool Generate()
     {
         Clear();
         generatedRooms.Add(startingRoom);
@@ -47,7 +49,7 @@ public class DungeonGenerator : MonoBehaviour
             if (openConnections.Count == 0)
             {
                 Debug.LogWarning("Generation blocked. No open connections left.", this);
-                return;
+                return false;
             }
 
             RoomConnector randomConnectorStart;
@@ -117,6 +119,7 @@ public class DungeonGenerator : MonoBehaviour
             else
             {
                 Debug.LogWarning("Generation blocked. No space for rooms found.", this);
+                return false;
             }
         }
 
@@ -130,6 +133,7 @@ public class DungeonGenerator : MonoBehaviour
             RoomConnector connectorEnd = closeoffInstance.roomConnectors[0];
             PlaceNewRoom(connectorStart, closeoffInstance, connectorEnd);
         }
+        return true;
     }
 
     private GameObject GetRandomRoom(int total)
@@ -179,5 +183,10 @@ public class DungeonGenerator : MonoBehaviour
 
         randomConnectorStart.other = randomConnectorEnd;
         randomConnectorEnd.other = randomConnectorStart;
+
+        if (roomInstance.GetComponent<UnityEngine.AI.NavMeshSurface>() != null)
+        {
+            randomConnectorEnd.AddNavMeshLink();
+        }
     }
 }
