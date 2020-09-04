@@ -6,9 +6,6 @@ public class PlayerControl : MonoBehaviour
     public static PlayerControl player;
 
     [SerializeField]
-    private float MovementSpeed = 5f;
-
-    [SerializeField]
     private GameObject Bullet = null;
     [SerializeField]
     private Transform MuzzlePosition = null;
@@ -26,7 +23,7 @@ public class PlayerControl : MonoBehaviour
 
     private NavMeshAgent agent;
 
-    private void Awake()
+    void Awake()
     {
         player = this;
         agent = GetComponent<NavMeshAgent>();
@@ -34,18 +31,20 @@ public class PlayerControl : MonoBehaviour
 
     void Update()
     {
-        if (Time.timeScale < 0.01f)
+        if (Time.frameCount == 2)
         {
+            agent.enabled = true;
             return;
         }
         Movement();
         Rotation();
-
+        /*
         if (Input.GetButton("Fire1") && !HitAnimator.isPlaying)
         {
             Attack();
         }
-        else if (Input.GetButton("Fire2") && Time.time > lastFired + BulletCooldown)
+        */
+        if (Input.GetButton("Fire2") && Time.time > lastFired + BulletCooldown)
         {
             Shoot();
         }
@@ -63,17 +62,33 @@ public class PlayerControl : MonoBehaviour
     private void Movement()
     {
         Vector3 movement = new Vector3();
-        movement.x = MovementSpeed * Input.GetAxis("Horizontal");
-        movement.z = MovementSpeed * Input.GetAxis("Vertical");
+        movement.x = agent.speed * Input.GetAxis("Horizontal");
+        movement.z = agent.speed * Input.GetAxis("Vertical");
 
-        //transform.Translate(movement * Time.deltaTime, Space.World);
-        agent.Move(movement * Time.deltaTime);
+        if (movement.sqrMagnitude > 0.01f)
+        {
+            agent.isStopped = true;
+            agent.Move(movement * Time.deltaTime);
+        }
+        else if (Input.GetButton("Fire1"))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Plane plane = new Plane(Vector3.up, Vector3.zero);
+
+            float hit;
+            if (plane.Raycast(ray, out hit))
+            {
+                Vector3 target = ray.origin + ray.direction * hit;
+                agent.SetDestination(target);
+                agent.isStopped = false;
+            }
+        }
     }
 
     private void Rotation()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane plane = new Plane(Vector3.up, Vector3.zero);
+        Plane plane = new Plane(Vector3.up, Vector3.up);
 
         float hit;
         Vector3 target = new Vector3();
@@ -82,7 +97,7 @@ public class PlayerControl : MonoBehaviour
             target = ray.origin + ray.direction * hit;
         }
 
-        transform.LookAt(target);
+        transform.rotation = Quaternion.LookRotation((target - transform.position).ToWithY(0f).normalized, Vector3.up);
     }
 
     private void Shoot()

@@ -165,10 +165,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 441041749646262042, guid: ff9ccf460265d814e9f7e15f7f9d3261, type: 3}
-      propertyPath: m_NavMeshData
-      value: 
-      objectReference: {fileID: 23800000, guid: b2daf8cc32cca114bbd2dc24444d0370, type: 2}
     - target: {fileID: 697451568314184392, guid: ff9ccf460265d814e9f7e15f7f9d3261, type: 3}
       propertyPath: roomConnectors.Array.size
       value: 3
@@ -179,7 +175,7 @@ PrefabInstance:
       objectReference: {fileID: 396383398530868234}
     - target: {fileID: 1504608949951605412, guid: ff9ccf460265d814e9f7e15f7f9d3261, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 2928950523556615112, guid: ff9ccf460265d814e9f7e15f7f9d3261, type: 3}
       propertyPath: m_Name
@@ -235,9 +231,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8600100631944542832, guid: ff9ccf460265d814e9f7e15f7f9d3261, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: ff9ccf460265d814e9f7e15f7f9d3261, type: 3}
 --- !u!4 &1282886579676149572 stripped
 Transform:

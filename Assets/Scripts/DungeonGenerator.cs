@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class DungeonGenerator : MonoBehaviour
 {
@@ -16,20 +17,30 @@ public class DungeonGenerator : MonoBehaviour
 
     public DungeonRoom startingRoom;
 
-    public bool generate;
+    public bool generateOnStart;
+    public bool addNavMesh;
     public int roomsNumber = 30;
     public int maxRetries = 5;
 
     private List<DungeonRoom> generatedRooms;
 
-    void Start()
+    private Bounds dungeonBounds;
+    private NavMeshSurface dungeonNavMesh;
+    void Awake()
     {
-        if (generate)
+        if (generateOnStart)
         {
-            for (int retries = 0; retries < maxRetries && !Generate(); retries++)
+            bool success = false;
+            for (int i = 0; i < maxRetries && !success; i++)
             {
+                success = Generate();
             }
         }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        DungeonRoom.DrawBounds(dungeonBounds, Vector3.zero, Quaternion.identity, Color.red);
     }
 
     [ContextMenu("Generate")]
@@ -37,6 +48,7 @@ public class DungeonGenerator : MonoBehaviour
     {
         Clear();
         generatedRooms.Add(startingRoom);
+        AddRoomBounds(startingRoom);
         List<RoomConnector> openConnections = new List<RoomConnector>();
         openConnections.AddRange(startingRoom.roomConnectors);
         int weightsTotal = 0;
@@ -96,7 +108,11 @@ public class DungeonGenerator : MonoBehaviour
                     if (b.Intersects(a))
                     {
                         fits = false;
-                        Destroy(roomInstance);
+                        if (Application.isPlaying)
+                        {
+                            roomInstance.transform.position = Vector3.one * 99999f;
+                        }
+                        Delete(roomInstance);
                         retries--;
                         break;
                     }
@@ -105,16 +121,7 @@ public class DungeonGenerator : MonoBehaviour
 
             if (fits)
             {
-                generatedRooms.Add(newRoom);
-                openConnections.RemoveAt(openIndex);
-
-                foreach (var connector in newRoom.roomConnectors)
-                {
-                    if (connector != randomConnectorEnd)
-                    {
-                        openConnections.Add(connector);
-                    }
-                }
+                AddRoomToDungeon(openConnections, newRoom, randomConnectorEnd, openIndex);
             }
             else
             {
@@ -123,6 +130,50 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
 
+        AddCloseOffsToDungeon(openConnections);
+
+        if (addNavMesh)
+        {
+            AddDungeonNavMesh();
+        }
+        return true;
+    }
+
+    private void AddDungeonNavMesh()
+    {
+        dungeonNavMesh = GetComponent<NavMeshSurface>();
+        if (dungeonNavMesh == null)
+        {
+            dungeonNavMesh = gameObject.AddComponent<NavMeshSurface>();
+        }
+
+        dungeonNavMesh.collectObjects = CollectObjects.Volume;
+        dungeonNavMesh.center = -transform.position + dungeonBounds.center;
+        dungeonNavMesh.size = dungeonBounds.size.ToWithY(20f);
+
+        dungeonNavMesh.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
+
+        dungeonNavMesh.BuildNavMesh();
+    }
+
+    private void AddRoomToDungeon(List<RoomConnector> openConnections, DungeonRoom newRoom, RoomConnector randomConnectorEnd, int openIndex)
+    {
+        generatedRooms.Add(newRoom);
+        openConnections.RemoveAt(openIndex);
+
+        foreach (var connector in newRoom.roomConnectors)
+        {
+            if (connector != randomConnectorEnd)
+            {
+                openConnections.Add(connector);
+            }
+        }
+
+        AddRoomBounds(newRoom);
+    }
+
+    private void AddCloseOffsToDungeon(List<RoomConnector> openConnections)
+    {
         for (int i = openConnections.Count - 1; i >= 0; i--)
         {
             RoomConnector connectorStart = openConnections[i];
@@ -133,7 +184,18 @@ public class DungeonGenerator : MonoBehaviour
             RoomConnector connectorEnd = closeoffInstance.roomConnectors[0];
             PlaceNewRoom(connectorStart, closeoffInstance, connectorEnd);
         }
-        return true;
+    }
+
+    private void AddRoomBounds(DungeonRoom newRoom)
+    {
+        Bounds a = newRoom.bounds;
+        if (Mathf.Abs(newRoom.transform.rotation.eulerAngles.y) / 90f % 2f > 0.9f)
+        {
+            a.size = a.size.ToVector3ZYX();
+            a.center = a.center.ToVector3ZYX();
+        }
+        a.center += newRoom.transform.position;
+        dungeonBounds.Encapsulate(a);
     }
 
     private GameObject GetRandomRoom(int total)
@@ -155,20 +217,29 @@ public class DungeonGenerator : MonoBehaviour
     [ContextMenu("Clear")]
     private void Clear()
     {
-        if (generatedRooms != null)
-        {
-            foreach (var room in generatedRooms)
-            {
-                if (room != startingRoom)
-                {
-                    Destroy(room.gameObject);
-                }
-            }
-            generatedRooms.Clear();
-        }
-        else
+        dungeonBounds = new Bounds(Vector3.zero, Vector3.zero);
+        if (generatedRooms == null)
         {
             generatedRooms = new List<DungeonRoom>();
+        }
+        if (Application.isEditor && !Application.isPlaying)
+        {
+            List<DungeonRoom> inEditorRooms = new List<DungeonRoom>(FindObjectsOfType<DungeonRoom>(false));
+            inEditorRooms.Remove(startingRoom);
+            generatedRooms.AddRange(inEditorRooms);
+        }
+        foreach (var room in generatedRooms)
+        {
+            if (room != startingRoom)
+            {
+                Delete(room.gameObject);
+            }
+        }
+        generatedRooms.Clear();
+
+        if (dungeonNavMesh != null)
+        {
+            Delete(dungeonNavMesh);
         }
     }
 
@@ -183,10 +254,17 @@ public class DungeonGenerator : MonoBehaviour
 
         randomConnectorStart.other = randomConnectorEnd;
         randomConnectorEnd.other = randomConnectorStart;
+    }
 
-        if (roomInstance.GetComponent<UnityEngine.AI.NavMeshSurface>() != null)
+    private void Delete(Object obj)
+    {
+        if (Application.isPlaying)
         {
-            randomConnectorEnd.AddNavMeshLink();
+            Destroy(obj);
+        }
+        else
+        {
+            DestroyImmediate(obj);
         }
     }
 }

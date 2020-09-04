@@ -168,7 +168,8 @@ namespace UnityEngine.AI
                 sourcesBounds = CalculateWorldBounds(sources);
             }
 
-            var data = NavMeshBuilder.BuildNavMeshData(GetBuildSettings(),
+            var settings = GetBuildSettings();
+            var data = NavMeshBuilder.BuildNavMeshData(settings,
                     sources, sourcesBounds, transform.position, transform.rotation);
 
             if (data != null)

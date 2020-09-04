@@ -342,11 +342,8 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 8879509405777578949, guid: c00db8a9f594ec94880bc53864981109, type: 3}
-      propertyPath: m_NavMeshData
-      value: 
-      objectReference: {fileID: 23800000, guid: 0202d8e5cd7b80240b234837ab7872af, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: c00db8a9f594ec94880bc53864981109, type: 3}
 --- !u!4 &6062130833723952684 stripped
 Transform:

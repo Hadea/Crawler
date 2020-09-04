@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
 public class BulletCollision : MonoBehaviour
 {
     [SerializeField]
@@ -20,6 +19,12 @@ public class BulletCollision : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // ignore other projectiles
+        if (other.transform.GetComponent<BulletCollision>())
+        {
+            return;
+        }
+
         // check if something with health has been hit
         Health health = other.transform.GetComponent<Health>();
         if (health != null)
@@ -33,19 +38,21 @@ public class BulletCollision : MonoBehaviour
             float velocity = rigid.velocity.magnitude;
             GameObject.Instantiate(hitEffect, transform.position - transform.forward * velocity * offset, transform.rotation * Quaternion.Euler(Vector3.up * 180f));
         }
-        else if (canGetStuck)
-        {
-            rigid.isKinematic = true;
-            gameObject.AddComponent<DestroyAfterTime>().timeToLive = stuckTime;
-            transform.position += -transform.forward * offset;
-            Destroy(GetComponent<Collider>());
-            Destroy(this);
-        }
-
-        if (!canGetStuck)
+        if (health != null)
         {
             // destroy bullet
             Destroy(gameObject);
+            return;
+        }
+        if (canGetStuck)
+        {
+            rigid.velocity = Vector3.zero;
+            gameObject.AddComponent<DestroyAfterTime>().timeToLive = stuckTime;
+            transform.position += -transform.forward * offset;
+            Destroy(GetComponent<Collider>());
+            Destroy(GetComponentInChildren<Rotator>());
+            Destroy(rigid);
+            Destroy(this);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 [ExecuteInEditMode]
 public class DungeonRoom : MonoBehaviour
@@ -10,7 +11,7 @@ public class DungeonRoom : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        DrawRoomSize();
+        DrawBounds(bounds, transform.position, transform.rotation, Color.magenta);
     }
 
     void Reset()
@@ -18,12 +19,11 @@ public class DungeonRoom : MonoBehaviour
         bounds.center = Vector2.zero;
     }
 
-    private void DrawRoomSize()
+    public static void DrawBounds(Bounds bounds, Vector3 position, Quaternion rotation, Color color)
     {
-        Color color = Color.magenta;
-        Debug.DrawLine(transform.position + transform.rotation * bounds.GetTopLeft2D().ToVector3XZ(), transform.position + transform.rotation * bounds.GetTopRight2D().ToVector3XZ(), color);
-        Debug.DrawLine(transform.position + transform.rotation * bounds.GetTopLeft2D().ToVector3XZ(), transform.position + transform.rotation * bounds.GetBottomLeft2D().ToVector3XZ(), color);
-        Debug.DrawLine(transform.position + transform.rotation * bounds.GetTopRight2D().ToVector3XZ(), transform.position + transform.rotation * bounds.GetBottomRight2D().ToVector3XZ(), color);
-        Debug.DrawLine(transform.position + transform.rotation * bounds.GetBottomLeft2D().ToVector3XZ(), transform.position + transform.rotation * bounds.GetBottomRight2D().ToVector3XZ(), color);
+        Debug.DrawLine(position + rotation * bounds.GetTopLeft2D().ToVector3XZ(), position + rotation * bounds.GetTopRight2D().ToVector3XZ(), color);
+        Debug.DrawLine(position + rotation * bounds.GetTopLeft2D().ToVector3XZ(), position + rotation * bounds.GetBottomLeft2D().ToVector3XZ(), color);
+        Debug.DrawLine(position + rotation * bounds.GetTopRight2D().ToVector3XZ(), position + rotation * bounds.GetBottomRight2D().ToVector3XZ(), color);
+        Debug.DrawLine(position + rotation * bounds.GetBottomLeft2D().ToVector3XZ(), position + rotation * bounds.GetBottomRight2D().ToVector3XZ(), color);
     }
 }

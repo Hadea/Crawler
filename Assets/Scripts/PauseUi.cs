@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseUi : MonoBehaviour
+public class PauseUI : MonoBehaviour
 {
     private void OnEnable()
     {
@@ -19,6 +19,9 @@ public class PauseUi : MonoBehaviour
 
     public void Exit()
     {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#endif
         Application.Quit();
     }
 

@@ -26,8 +26,6 @@ public class Looting : MonoBehaviour
             case "Coin":
                 CollectCoin();
                 break;
-            default:
-                break;
         }
         // destroy loot object in game world
         Destroy(loot);
