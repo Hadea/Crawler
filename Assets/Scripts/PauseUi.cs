@@ -13,7 +13,6 @@ public class PauseUI : MonoBehaviour
     public void Resume()
     {
         gameObject.SetActive(false); //mit dem kleinen gameObject frage ich mich selbst ab.
-        print("Resume");
         Time.timeScale = 1f; //TimeFreeze reset
     }
 

@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1306475993088192499}
   - component: {fileID: 396383398530868234}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Room Connector (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1306475993088192499
 Transform:
@@ -54,6 +54,10 @@ PrefabInstance:
     - target: {fileID: 1460318695415531491, guid: 723eba08b37ce624aa4410102d05d8ab, type: 3}
       propertyPath: m_Name
       value: Wand4 (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460318695415531491, guid: 723eba08b37ce624aa4410102d05d8ab, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5435318968708828744, guid: 723eba08b37ce624aa4410102d05d8ab, type: 3}
       propertyPath: m_LocalPosition.x
@@ -111,6 +115,10 @@ PrefabInstance:
     - target: {fileID: 1460318695415531491, guid: 723eba08b37ce624aa4410102d05d8ab, type: 3}
       propertyPath: m_Name
       value: Wand4 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460318695415531491, guid: 723eba08b37ce624aa4410102d05d8ab, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5435318968708828744, guid: 723eba08b37ce624aa4410102d05d8ab, type: 3}
       propertyPath: m_LocalPosition.x
@@ -175,7 +183,7 @@ PrefabInstance:
       objectReference: {fileID: 396383398530868234}
     - target: {fileID: 1504608949951605412, guid: ff9ccf460265d814e9f7e15f7f9d3261, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 2928950523556615112, guid: ff9ccf460265d814e9f7e15f7f9d3261, type: 3}
       propertyPath: m_Name
@@ -231,7 +239,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8600100631944542832, guid: ff9ccf460265d814e9f7e15f7f9d3261, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}

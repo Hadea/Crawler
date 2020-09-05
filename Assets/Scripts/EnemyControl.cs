@@ -16,14 +16,16 @@ public class EnemyControl : MonoBehaviour
     private float rotationSpeed = 90f;
 
     [SerializeField]
-    private GameObject Bullet = null;
+    private int bulletDamage = 1;
     [SerializeField]
-    private Transform MuzzlePosition = null;
+    private GameObject bullet = null;
+    [SerializeField]
+    private Transform muzzlePosition = null;
 
     [SerializeField]
-    private float BulletSpeed = 30f;
+    private float bulletSpeed = 30f;
     [SerializeField]
-    private float BulletCooldown = 1f;
+    private float bulletCooldown = 1f;
     private float lastBulletFired;
 
     void Start()
@@ -82,11 +84,12 @@ public class EnemyControl : MonoBehaviour
 
     private void Shoot()
     {
-        if (Time.time > lastBulletFired + BulletCooldown)
+        if (Time.time > lastBulletFired + bulletCooldown)
         {
             lastBulletFired = Time.time;
-            GameObject newBullet = GameObject.Instantiate(Bullet, MuzzlePosition.position, transform.rotation);
-            newBullet.GetComponent<Rigidbody>().AddForce(transform.forward * BulletSpeed);
+            GameObject newBullet = GameObject.Instantiate(bullet, muzzlePosition.position, transform.rotation);
+            newBullet.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed);
+        newBullet.GetComponent<BulletCollision>().damage = bulletDamage;
         }
     }
 }

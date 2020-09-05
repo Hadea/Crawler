@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1476656330267150284}
   - component: {fileID: 1476656330267150285}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Closeoff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1476656330267150284
 Transform:
@@ -47,6 +47,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomConnectors:
   - {fileID: 1476656330371384745}
+  bounds:
+    m_Center: {x: 0, y: 0, z: 0}
+    m_Extent: {x: 0, y: 0, z: 0}
 --- !u!1 &1476656330371384744
 GameObject:
   m_ObjectHideFlags: 0
@@ -57,12 +60,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1476656330371384746}
   - component: {fileID: 1476656330371384745}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Room Connector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &1476656330371384746
 Transform:
@@ -90,6 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6bbbdf5cd76ef1469ee98f2a7a9cc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  other: {fileID: 0}
 --- !u!1001 &1476656330966560389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -100,6 +104,10 @@ PrefabInstance:
     - target: {fileID: 1460318695415531491, guid: 723eba08b37ce624aa4410102d05d8ab, type: 3}
       propertyPath: m_Name
       value: Wand4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1460318695415531491, guid: 723eba08b37ce624aa4410102d05d8ab, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5435318968708828744, guid: 723eba08b37ce624aa4410102d05d8ab, type: 3}
       propertyPath: m_LocalPosition.x

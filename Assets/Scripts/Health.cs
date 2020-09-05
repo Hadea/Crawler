@@ -16,10 +16,10 @@ public class Health : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage()
+    public void TakeDamage(int damage)
     {
         // reduce health by one life
-        currentHealth--;
+        currentHealth -= damage;
         if (currentHealth <= 0)
         {
             Die();

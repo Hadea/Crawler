@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 415119782671616395}
   - component: {fileID: 6488553523082241403}
   - component: {fileID: 4239495100490698197}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wand10
   m_TagString: Untagged
   m_Icon: {fileID: 0}

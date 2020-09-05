@@ -7,22 +7,20 @@ public class Spawner : MonoBehaviour
     [SerializeField]
     private int spawnCounter = 10;
     [SerializeField]
-    private float spawnCooldown = 2;
+    private float spawningCooldown = 0f;
     private float lastSomethingSpawned;
 
     [SerializeField]
-    private float activationRange = 15f;
+    private float activeRange = 50f;
 
     [SerializeField]
     private Transform spawnArea = null;
 
     void Update()
     {
-        Debug.DrawLine(transform.position, transform.position + Vector3.right * spawnArea.lossyScale.x * 0.5f, Color.blue);
-
-        if (PlayerControl.player != null && Vector3.Distance(PlayerControl.player.transform.position, transform.position) < activationRange)
+        if (PlayerControl.player != null && Vector3.Distance(PlayerControl.player.transform.position, transform.position) < activeRange)
         {
-            if (Time.time > lastSomethingSpawned + spawnCooldown && spawnCounter > 0)
+            if (Time.time > lastSomethingSpawned + spawningCooldown && spawnCounter > 0)
             {
                 lastSomethingSpawned = Time.time;
 
@@ -44,11 +42,11 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos()
+    void OnDrawGizmosSelected()
     {
 #if UNITY_EDITOR
         UnityEditor.Handles.color = Color.yellow;
-        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, activationRange);
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, activeRange);
 #endif
     }
 }

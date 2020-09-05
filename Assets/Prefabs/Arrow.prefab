@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8618027946062392969}
   - component: {fileID: 4735693447558670541}
   - component: {fileID: 3950461964871972879}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 2247679769352185644}
   - component: {fileID: 4640512892229549317}
   - component: {fileID: 4751291698244172798}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitEffect: {fileID: 0}
-  offset: 0.2
+  offset: 0.6
   canGetStuck: 1
   stuckTime: 20
 --- !u!1 &4359924073216632573
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 1529686964994780210}
   - component: {fileID: 1603431431135818719}
   - component: {fileID: 7719618036521523294}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 3972695139644099447}
   - component: {fileID: 6938471623061159296}
   - component: {fileID: 4711155613704895417}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,7 +333,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8583759987539174777}
   - component: {fileID: 7488045219052805377}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,7 +383,7 @@ GameObject:
   - component: {fileID: 1271577472263097993}
   - component: {fileID: 7228493515974716280}
   - component: {fileID: 5016080730516072741}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

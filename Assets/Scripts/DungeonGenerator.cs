@@ -108,10 +108,7 @@ public class DungeonGenerator : MonoBehaviour
                     if (b.Intersects(a))
                     {
                         fits = false;
-                        if (Application.isPlaying)
-                        {
-                            roomInstance.transform.position = Vector3.one * 99999f;
-                        }
+                        roomInstance.transform.position = Vector3.one * 99999f;
                         Delete(roomInstance);
                         retries--;
                         break;
@@ -178,24 +175,32 @@ public class DungeonGenerator : MonoBehaviour
         {
             RoomConnector connectorStart = openConnections[i];
             openConnections.RemoveAt(i);
+
             GameObject instance = Instantiate(closeoffPrefab);
             DungeonRoom closeoffInstance = instance.GetComponent<DungeonRoom>();
             generatedRooms.Add(closeoffInstance);
             RoomConnector connectorEnd = closeoffInstance.roomConnectors[0];
             PlaceNewRoom(connectorStart, closeoffInstance, connectorEnd);
+
+            AddRoomBounds(closeoffInstance, true);
         }
     }
 
-    private void AddRoomBounds(DungeonRoom newRoom)
+    private void AddRoomBounds(DungeonRoom newRoom, bool closeOff = false)
     {
-        Bounds a = newRoom.bounds;
-        if (Mathf.Abs(newRoom.transform.rotation.eulerAngles.y) / 90f % 2f > 0.9f)
+        if (!closeOff)
         {
-            a.size = a.size.ToVector3ZYX();
-            a.center = a.center.ToVector3ZYX();
+            Bounds a = newRoom.bounds;
+            if (Mathf.Abs(newRoom.transform.rotation.eulerAngles.y) / 90f % 2f > 0.9f)
+            {
+                a.size = a.size.ToVector3ZYX();
+                a.center = a.center.ToVector3ZYX();
+            }
+            a.center += newRoom.transform.position;
+            dungeonBounds.Encapsulate(a);
         }
-        a.center += newRoom.transform.position;
-        dungeonBounds.Encapsulate(a);
+
+        newRoom.transform.SetParent(transform, true);
     }
 
     private GameObject GetRandomRoom(int total)

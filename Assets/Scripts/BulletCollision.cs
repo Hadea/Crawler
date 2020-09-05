@@ -11,6 +11,7 @@ public class BulletCollision : MonoBehaviour
     [SerializeField]
     private float stuckTime = 5f;
     private Rigidbody rigid;
+    public int damage { set; private get; }
 
     private void Start()
     {
@@ -30,7 +31,7 @@ public class BulletCollision : MonoBehaviour
         if (health != null)
         {
             // deal damage to target
-            health.TakeDamage();
+            health.TakeDamage(damage);
         }
         // spawn hit effect on current position
         if (hitEffect != null)

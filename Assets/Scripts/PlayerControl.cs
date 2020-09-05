@@ -6,20 +6,30 @@ public class PlayerControl : MonoBehaviour
     public static PlayerControl player;
 
     [SerializeField]
-    private GameObject Bullet = null;
+    private GameObject bullet = null;
     [SerializeField]
-    private Transform MuzzlePosition = null;
+    private int bulletDamage = 2;
+    [SerializeField]
+    private Transform muzzlePosition = null;
+    private ParticleSystem chargeEffect;
 
     [SerializeField]
-    private float BulletSpeed = 30f;
+    private float bulletSpeed = 30f;
     [SerializeField]
-    private float BulletCooldown = 0.2f;
+    private float bulletCooldown = 0.2f;
     private float lastFired;
+    [SerializeField]
+    private float chargeTime = 1f;
+    private float chargeStart;
+    [SerializeField]
+    private int chargeDamageMultiplier = 2;
+    [SerializeField]
+    private float chargeSpeedMultiplier = 1.5f;
 
     [SerializeField]
-    private Animation HitAnimator = null;
+    private Animation hitAnimator = null;
     [SerializeField]
-    private Transform HitArea = null;
+    private Transform hitArea = null;
 
     private NavMeshAgent agent;
 
@@ -27,6 +37,7 @@ public class PlayerControl : MonoBehaviour
     {
         player = this;
         agent = GetComponent<NavMeshAgent>();
+        chargeEffect = GetComponentInChildren<ParticleSystem>();
     }
 
     void Update()
@@ -44,14 +55,23 @@ public class PlayerControl : MonoBehaviour
             Attack();
         }
         */
-        if (Input.GetButton("Fire2") && Time.time > lastFired + BulletCooldown)
+        if (Time.time > lastFired + bulletCooldown)
         {
-            Shoot();
+            if (Input.GetButtonDown("Fire2"))
+            {
+                chargeStart = Time.time;
+                chargeEffect?.Play(true);
+            }
+            if (Input.GetButtonUp("Fire2"))
+            {
+                Shoot(Time.time - chargeStart > chargeTime);
+                chargeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            }
         }
 
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
         if (UIManager.manager != null)
         {
@@ -100,17 +120,18 @@ public class PlayerControl : MonoBehaviour
         transform.rotation = Quaternion.LookRotation((target - transform.position).ToWithY(0f).normalized, Vector3.up);
     }
 
-    private void Shoot()
+    private void Shoot(bool charged)
     {
         lastFired = Time.time;
-        GameObject newBullet = GameObject.Instantiate(Bullet, MuzzlePosition.position, transform.rotation);
-        newBullet.GetComponent<Rigidbody>().AddForce(transform.forward * BulletSpeed);
+        GameObject newBullet = Instantiate(bullet, muzzlePosition.position, transform.rotation);
+        newBullet.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed * (charged ? chargeSpeedMultiplier : 1f));
+        newBullet.GetComponent<BulletCollision>().damage = bulletDamage * (charged ? chargeDamageMultiplier : 1);
     }
 
     private void Attack()
     {
-        HitAnimator.Play();
-        Collider[] colliders = Physics.OverlapBox(HitArea.transform.position, HitArea.transform.localScale * 0.5f, HitArea.transform.rotation);
+        hitAnimator.Play();
+        Collider[] colliders = Physics.OverlapBox(hitArea.transform.position, hitArea.transform.localScale * 0.5f, hitArea.transform.rotation);
         foreach (var collider in colliders)
         {
             if (!collider.isTrigger)
@@ -127,7 +148,7 @@ public class PlayerControl : MonoBehaviour
         if (health != null)
         {
             // deal damage to target
-            health.TakeDamage();
+            health.TakeDamage(1);
         }
     }
 }
