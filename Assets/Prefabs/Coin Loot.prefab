@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6200669154372114668}
   - component: {fileID: 6200669154372114659}
   - component: {fileID: 6200669154372114658}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,7 +106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6200669155225722963}
   - component: {fileID: 6200669155225722972}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Coin Loot
   m_TagString: Coin
   m_Icon: {fileID: 0}

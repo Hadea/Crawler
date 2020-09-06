@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
 public class Looting : MonoBehaviour
@@ -24,19 +25,31 @@ public class Looting : MonoBehaviour
         switch (loot.tag)
         {
             case "Coin":
-                CollectCoin();
+                StartCoroutine(CollectCoin(loot));
                 break;
         }
         // destroy loot object in game world
-        Destroy(loot);
     }
 
-    private void CollectCoin()
+    private IEnumerator CollectCoin(GameObject coin)
     {
+        float size = 0.55f;
+        float sqrStartDistance = (transform.position - coin.transform.position).sqrMagnitude;
+        float speed = 0f;
+        Vector3 vector;
+        do
+        {
+            vector = transform.position - coin.transform.position;
+            speed = Mathf.Max(sqrStartDistance / (vector.sqrMagnitude) + 0.1f, speed);
+            coin.transform.position = Vector3.MoveTowards(coin.transform.position, transform.position, speed * Time.deltaTime);
+            yield return null;
+
+        } while (vector.magnitude > size);
         // increase score
         if (UIManager.manager != null)
         {
             UIManager.manager.score++;
         }
+        Destroy(coin);
     }
 }

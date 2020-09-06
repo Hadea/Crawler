@@ -8,7 +8,7 @@ public class Health : MonoBehaviour
     [SerializeField]
     private int maxHealth = 1;
 
-    private int currentHealth;
+    public int currentHealth { get; private set; }
 
     // Start is called before the first frame update
     void Start()
@@ -36,10 +36,5 @@ public class Health : MonoBehaviour
             lootDropping.Drop();
         }
         Destroy(gameObject);
-    }
-
-    public int GetCurrent()
-    {
-        return currentHealth;
     }
 }
