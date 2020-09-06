@@ -19,6 +19,7 @@ public class DungeonGenerator : MonoBehaviour
 
     public bool generateOnStart;
     public bool addNavMesh;
+    public LayerMask terrainMask;
     public int roomsNumber = 30;
     public int maxRetries = 5;
 
@@ -148,6 +149,7 @@ public class DungeonGenerator : MonoBehaviour
         dungeonNavMesh.center = -transform.position + dungeonBounds.center;
         dungeonNavMesh.size = dungeonBounds.size.ToWithY(20f);
 
+        dungeonNavMesh.layerMask = terrainMask;
         dungeonNavMesh.useGeometry = NavMeshCollectGeometry.PhysicsColliders;
 
         dungeonNavMesh.BuildNavMesh();
@@ -237,6 +239,7 @@ public class DungeonGenerator : MonoBehaviour
         {
             if (room != startingRoom)
             {
+                room.transform.position = Vector3.one * 99999f;
                 Delete(room.gameObject);
             }
         }
