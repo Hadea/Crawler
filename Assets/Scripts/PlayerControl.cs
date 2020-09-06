@@ -6,25 +6,15 @@ public class PlayerControl : MonoBehaviour
     public static PlayerControl player;
 
     [SerializeField]
-    private GameObject bullet = null;
-    [SerializeField]
-    private int bulletDamage = 2;
-    [SerializeField]
     private Transform muzzlePosition = null;
     private ParticleSystem chargeEffect;
 
     [SerializeField]
-    private float bulletSpeed = 30f;
-    [SerializeField]
-    private float bulletCooldown = 0.2f;
+    private RangedWeapon rangedWeapon = null;
+    public int ammo = 50;
+
     private float lastFired;
-    [SerializeField]
-    private float chargeTime = 1f;
     private float chargeStart;
-    [SerializeField]
-    private int chargeDamageMultiplier = 2;
-    [SerializeField]
-    private float chargeSpeedMultiplier = 1.5f;
 
     [SerializeField]
     private Animation hitAnimator = null;
@@ -38,6 +28,11 @@ public class PlayerControl : MonoBehaviour
         player = this;
         agent = GetComponent<NavMeshAgent>();
         chargeEffect = GetComponentInChildren<ParticleSystem>();
+    }
+
+    void Start()
+    {
+        agent.enabled = false;
     }
 
     void Update()
@@ -55,7 +50,7 @@ public class PlayerControl : MonoBehaviour
             Attack();
         }
         */
-        if (Time.time > lastFired + bulletCooldown)
+        if (rangedWeapon != null && ammo > 0 && Time.time > lastFired + rangedWeapon.cooldown)
         {
             if (Input.GetButtonDown("Fire2"))
             {
@@ -64,11 +59,12 @@ public class PlayerControl : MonoBehaviour
             }
             if (Input.GetButtonUp("Fire2"))
             {
-                Shoot(Time.time - chargeStart > chargeTime);
+                lastFired = Time.time;
+                rangedWeapon.Shoot(muzzlePosition.position, muzzlePosition.rotation, Time.time - chargeStart > rangedWeapon.chargeTime);
                 chargeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                ammo--;
             }
         }
-
     }
 
     void OnDestroy()
@@ -81,6 +77,11 @@ public class PlayerControl : MonoBehaviour
 
     private void Movement()
     {
+        if (!agent.enabled)
+        {
+            return;
+        }
+
         Vector3 movement = new Vector3();
         movement.x = agent.speed * Input.GetAxis("Horizontal");
         movement.z = agent.speed * Input.GetAxis("Vertical");
@@ -120,13 +121,7 @@ public class PlayerControl : MonoBehaviour
         transform.rotation = Quaternion.LookRotation((target - transform.position).ToWithY(0f).normalized, Vector3.up);
     }
 
-    private void Shoot(bool charged)
-    {
-        lastFired = Time.time;
-        GameObject newBullet = Instantiate(bullet, muzzlePosition.position, transform.rotation);
-        newBullet.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed * (charged ? chargeSpeedMultiplier : 1f));
-        newBullet.GetComponent<BulletCollision>().damage = bulletDamage * (charged ? chargeDamageMultiplier : 1);
-    }
+    
 
     private void Attack()
     {

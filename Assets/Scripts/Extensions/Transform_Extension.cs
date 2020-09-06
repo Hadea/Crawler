@@ -80,7 +80,7 @@ public static class Transform_Extension
         return null;
     }
 
-    public static Ray CreateRay(this Transform transform)
+    public static Ray CreateForwardRay(this Transform transform)
     {
         return new Ray(transform.position, transform.forward);
     }

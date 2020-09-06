@@ -198,6 +198,9 @@ MonoBehaviour:
   startingRoom: {fileID: 287660250}
   generateOnStart: 1
   addNavMesh: 1
+  terrainMask:
+    serializedVersion: 2
+    m_Bits: 256
   roomsNumber: 100
   maxRetries: 10
 --- !u!1001 &445054922
@@ -694,6 +697,10 @@ PrefabInstance:
       propertyPath: pauseUI
       value: 
       objectReference: {fileID: 494712288}
+    - target: {fileID: 750144385009935395, guid: 92b398a1217fa5c4993a8e1d17c53d69, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: f88047f76a82e4a42853febe49817697, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92b398a1217fa5c4993a8e1d17c53d69, type: 3}
 --- !u!1001 &7723402186979949321
