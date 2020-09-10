@@ -28,6 +28,8 @@ public class EnemyControl : MonoBehaviour
     private float bulletCooldown = 1f;
     private float lastBulletFired;
 
+    private bool hasAggro;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -42,8 +44,9 @@ public class EnemyControl : MonoBehaviour
 
         // Check if player is in aggro range
         float distance = Vector3.Distance(PlayerControl.player.transform.position, transform.position);
-        if (distance < aggroRange && (agent.hasPath ? agent.remainingDistance < aggroRange : true))
+        if ((distance < aggroRange || hasAggro) && (agent.hasPath ? agent.remainingDistance < aggroRange : true))
         {
+            hasAggro = true;
             // Check if player is visible from own position
             Ray ray = new Ray(transform.position + Vector3.up, PlayerControl.player.transform.position - transform.position);
             RaycastHit hit;

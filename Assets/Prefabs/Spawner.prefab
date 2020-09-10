@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   somethingToSpawn: {fileID: 3436743696104757814, guid: 9f0b9e8804300d34883d4ec5cda510d5, type: 3}
   spawnCounter: 10
-  spawnCooldown: 0.5
-  activationRange: 15
+  spawningCooldown: 0
+  activeRange: 50
   spawnArea: {fileID: 2102057984143212382}
 --- !u!1 &2102057984143212383
 GameObject:
