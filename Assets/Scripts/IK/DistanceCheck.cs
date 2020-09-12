@@ -25,13 +25,44 @@ public class DistanceCheck : MonoBehaviour
 
     void Update()
     {
+        bool[] doStep = new bool[legSteps.Length];
         for (int i = 0; i < legSteps.Length; i++)
         {
-            int j = (i + 2) % legSteps.Length;
             Vector3 vector = legSteps[i].bodyTarget.position - legSteps[i].leg.target.position;
-            if (vector.sqrMagnitude > stepThreshhold * stepThreshhold && !legSteps[i].stepping && !legSteps[j].stepping)
+
+            if (vector.sqrMagnitude > stepThreshhold * stepThreshhold && (
+                (i == 0 || i == 3) && !legSteps[1].stepping && !legSteps[2].stepping ||
+                (i == 1 || i == 2) && !legSteps[0].stepping && !legSteps[3].stepping))
+            {
+                doStep[i] = true;
+                int j;
+                switch (i)
+                {
+                    case 0:
+                        j = 3;
+                        doStep[j] = Vector3.Distance(legSteps[j].bodyTarget.position, legSteps[j].leg.target.position) / stepThreshhold > 0.3f;
+                        break;
+                    case 1:
+                        j = 2;
+                        doStep[j] = Vector3.Distance(legSteps[j].bodyTarget.position, legSteps[j].leg.target.position) / stepThreshhold > 0.3f;
+                        break;
+                    case 2:
+                        j = 1;
+                        doStep[j] = Vector3.Distance(legSteps[j].bodyTarget.position, legSteps[j].leg.target.position) / stepThreshhold > 0.3f;
+                        break;
+                    case 3:
+                        j = 0;
+                        doStep[j] = Vector3.Distance(legSteps[j].bodyTarget.position, legSteps[j].leg.target.position) / stepThreshhold > 0.3f;
+                        break;
+                }
+            }
+        }
+        for (int i = 0; i < legSteps.Length; i++)
+        {
+            if (doStep[i])
             {
                 legSteps[i].stepping = true;
+                Vector3 vector = legSteps[i].bodyTarget.position - legSteps[i].leg.target.position;
                 Vector3 originalVector = vector.normalized;
                 //Debug.DrawRay(legSteps[i].bodyTarget.position, originalVector * stepThreshhold, Color.blue, .5f);
                 vector = legSteps[i].bodyTarget.InverseTransformVector(vector.normalized);
@@ -41,6 +72,7 @@ public class DistanceCheck : MonoBehaviour
                 //Debug.DrawRay(legSteps[i].bodyTarget.position, correctedVector * stepThreshhold, Color.magenta, .5f);
                 vector = Vector3.Lerp(originalVector, correctedVector, 0.5f).normalized;
                 //Debug.DrawRay(legSteps[i].bodyTarget.position, vector * stepThreshhold, Color.red, .5f);
+
                 StartCoroutine(StepAnim(legSteps[i], vector * stepThreshhold));
             }
         }
@@ -60,8 +92,8 @@ public class DistanceCheck : MonoBehaviour
     private IEnumerator StepAnim(LegStep step, Vector3 vector)
     {
         Vector3 startPos = step.leg.target.position;
-        Vector3 endPos = step.bodyTarget.position + vector;
-        for (float duration = 0f; duration < stepDuration * 0.9f; duration += Time.deltaTime)
+        Vector3 endPos = step.bodyTarget.position + vector * 0.99f;
+        for (float duration = 0f; duration < stepDuration; duration += Time.deltaTime)
         {
             float percentage = stepDuration * 0.5f != 0f ? duration / (stepDuration * 0.5f) : 0f;
 
@@ -69,7 +101,6 @@ public class DistanceCheck : MonoBehaviour
 
             yield return null;
         }
-        yield return Yielders.Get(stepDuration * 0.1f);
         step.stepping = false;
     }
 
