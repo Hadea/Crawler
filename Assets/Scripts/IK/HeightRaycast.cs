@@ -17,7 +17,7 @@ public class HeightRaycast : MonoBehaviour
             if (Physics.Raycast(ray, out hit, maxDistance, mask))
             {
                 child.position = hit.point;
-                child.up = hit.normal;
+                //child.up = hit.normal;
             }
         }
     }
@@ -28,7 +28,7 @@ public class HeightRaycast : MonoBehaviour
         {
             Transform child = transforms[i];
 
-            Debug.DrawRay(transform.TransformPoint(transform.InverseTransformPoint(child.position).ToWithY(0)), -transform.up * maxDistance, Color.cyan);
+            //Debug.DrawRay(transform.TransformPoint(transform.InverseTransformPoint(child.position).ToWithY(0)), -transform.up * maxDistance, Color.cyan);
         }
     }
 }

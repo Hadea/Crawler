@@ -15,8 +15,7 @@ public class FastIK : MonoBehaviour
 
     public float delta = 0.001f;
 
-    [Range(0f, 1f)]
-    public float SnapBackStrenght = 1f;
+    public bool hideTargetTransforms = true;
 
     protected Transform[] bones;
     protected Vector3[] positions;
@@ -90,7 +89,10 @@ public class FastIK : MonoBehaviour
                 target.position = transform.position;
                 target.Translate(-offset, Space.Self);
             }
-            target.gameObject.hideFlags = HideFlags.HideAndDontSave;
+            if (hideTargetTransforms)
+            {
+                target.gameObject.hideFlags = HideFlags.HideAndDontSave;
+            }
         }
         startRotationTarget = target.rotation;
 
@@ -203,7 +205,6 @@ public class FastIK : MonoBehaviour
             {
                 rotation = Quaternion.FromToRotation(startDirectionSucc[i], positions[i + 1] - positions[i]) * startRotations[i];
             }
-
             bones[i].SetPositionAndRotation(positions[i], rotation);
         }
     }

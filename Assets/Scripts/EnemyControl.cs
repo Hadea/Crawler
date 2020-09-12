@@ -33,6 +33,7 @@ public class EnemyControl : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        
     }
 
     void Update()
@@ -40,6 +41,10 @@ public class EnemyControl : MonoBehaviour
         if (PlayerControl.player == null)
         {
             return;
+        }
+        if (Time.frameCount >= 2)
+        {
+            agent.enabled = true;
         }
 
         // Check if player is in aggro range
