@@ -60,6 +60,12 @@ public class FastIK : MonoBehaviour
         }
     }
 
+    void OnDrawGizmosSelected()
+    {
+        //Gizmos.color = Color.Lerp(Color.black, Color.green, 0.5f);
+        //Gizmos.DrawWireSphere(pole.position, 0.1f);
+    }
+
     private void Initialize()
     {
         bones = new Transform[chainLenght + 1];
@@ -87,11 +93,11 @@ public class FastIK : MonoBehaviour
             else
             {
                 target.position = transform.position;
-                target.Translate(-offset, Space.Self);
+                target.Translate(offset, Space.Self);
             }
             if (hideTargetTransforms)
             {
-                target.gameObject.hideFlags = HideFlags.HideAndDontSave;
+                target.gameObject.hideFlags = HideFlags.HideInHierarchy | HideFlags.DontSaveInEditor | HideFlags.DontSaveInBuild;
             }
         }
         startRotationTarget = target.rotation;
