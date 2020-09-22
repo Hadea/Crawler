@@ -14,6 +14,7 @@ public class DistanceCheck : MonoBehaviour
     }
 
     public LegStep[] legSteps;
+    public bool startZigZag;
     public float stepThreshhold = 0.75f;
 
     public float stepDuration = 1f;
@@ -21,6 +22,8 @@ public class DistanceCheck : MonoBehaviour
     public AnimationCurve stepLerpCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(1f, 1f));
     public float stepHeight = 0.5f;
     public AnimationCurve stepHeightCurve = new AnimationCurve(new Keyframe(0f, 0f), new Keyframe(0.5f, 1f), new Keyframe(1f, 0f));
+
+    private bool switchPriority;
 
     [Space]
     [SerializeField]
@@ -39,7 +42,10 @@ public class DistanceCheck : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(ZigZagSetup());
+        if (startZigZag)
+        {
+            StartCoroutine(ZigZagSetup());
+        }
     }
 
     void Update()
@@ -48,8 +54,14 @@ public class DistanceCheck : MonoBehaviour
         angularVelocity = GetComponentInParent<AngularVelocityCalculator>().angularVelocity;
 
         bool[] doStep = new bool[legSteps.Length];
-        for (int i = 0; i < 2; i++)
+
+        int[] order = new int[2];
+        order[0] = switchPriority.ToInt();
+        order[1] = switchPriority.ToInt() + 1 % 2;
+        bool doesStep = false;
+        for (int l = 0; l < 2; l++)
         {
+            int i = order[l];
             Vector3 distance = legSteps[i].bodyTarget.position - legSteps[i].leg.target.position;
             if (distance.sqrMagnitude > stepThreshhold * stepThreshhold && !legSteps[i].stepping)
             {
@@ -75,10 +87,15 @@ public class DistanceCheck : MonoBehaviour
                         if (thisEven && otherEven || !thisEven && !otherEven)
                         {
                             doStep[j] = true;//Vector3.Distance(legSteps[j].bodyTarget.position, legSteps[j].leg.target.position) / stepThreshhold > 0.3f;
+                            doesStep = true;
                         }
                     }
                 }
             }
+        }
+        if (doesStep)
+        {
+            switchPriority = !switchPriority;
         }
         for (int i = 0; i < legSteps.Length; i++)
         {

@@ -2,32 +2,38 @@
 
 public class BulletCollision : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject hitEffect = null;
-    [SerializeField]
-    private float offset = 0.04f;
-    [SerializeField]
-    private bool canGetStuck = false;
-    [SerializeField]
-    private float stuckTime = 5f;
-    private Rigidbody rigid;
+    public float speed { set; private get; }
+    public GameObject hitEffect;
+    public float raycastLenght = 0.3f;
+    public LayerMask raycastMask;
+    public bool canGetStuck;
+    public float stuckTime = 5f;
     public int damage { set; private get; }
 
-    private void Start()
+    void Update()
     {
-        rigid = GetComponent<Rigidbody>();
+        Ray ray = transform.CreateForwardRay();
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, raycastLenght, raycastMask))
+        {
+            OnHit(hit.transform);
+        }
+        else
+        {
+            transform.Translate(Vector3.forward * speed * Time.deltaTime, Space.Self);
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnDrawGizmos()
     {
-        // ignore other projectiles
-        if (other.transform.GetComponent<BulletCollision>())
-        {
-            return;
-        }
+        Debug.DrawRay(transform.position, transform.forward * raycastLenght, Color.white);
+    }
+
+    private void OnHit(Transform other)
+    {
 
         // check if something with health has been hit
-        Health health = other.transform.GetComponent<Health>();
+        Health health = other.root.GetComponentInChildren<Health>();
         if (health != null)
         {
             // deal damage to target
@@ -36,8 +42,7 @@ public class BulletCollision : MonoBehaviour
         // spawn hit effect on current position
         if (hitEffect != null)
         {
-            float velocity = rigid.velocity.magnitude;
-            GameObject.Instantiate(hitEffect, transform.position - transform.forward * velocity * offset, transform.rotation * Quaternion.Euler(Vector3.up * 180f));
+            GameObject.Instantiate(hitEffect, transform.position - transform.forward * raycastLenght, transform.rotation * Quaternion.Euler(Vector3.up * 180f));
         }
         if (health != null)
         {
@@ -45,15 +50,14 @@ public class BulletCollision : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        if (canGetStuck)
+        if (canGetStuck && other.gameObject.isStatic)
         {
-            rigid.velocity = Vector3.zero;
             gameObject.AddComponent<DestroyAfterTime>().timeToLive = stuckTime;
-            transform.position += -transform.forward * offset;
+            transform.position += -transform.forward * raycastLenght;
             Destroy(GetComponent<Collider>());
             Destroy(GetComponentInChildren<Rotator>());
-            Destroy(rigid);
             Destroy(this);
+            speed = 0f;
         }
     }
 }

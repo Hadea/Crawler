@@ -6,26 +6,18 @@ public class EnemyControl : MonoBehaviour
 {
     private NavMeshAgent agent;
 
-    [SerializeField]
-    private float aggroRange = 15f;
+    public float aggroRange = 15f;
 
-    [SerializeField]
-    private LayerMask layerMaskForPlayerSearch = new LayerMask();
+    public LayerMask layerMaskForPlayerSearch;
 
-    [SerializeField]
-    private float rotationSpeed = 90f;
+    public float rotationSpeed = 90f;
 
-    [SerializeField]
-    private int bulletDamage = 1;
-    [SerializeField]
-    private GameObject bullet = null;
-    [SerializeField]
-    private Transform muzzlePosition = null;
+    public int projectileDamage = 1;
+    public GameObject projectilePrefab;
+    public Transform muzzlePosition;
 
-    [SerializeField]
-    private float bulletSpeed = 30f;
-    [SerializeField]
-    private float bulletCooldown = 1f;
+    public float projectileSpeed = 30f;
+    public float projectileCooldown = 1f;
     private float lastBulletFired;
 
     private bool hasAggro;
@@ -92,12 +84,13 @@ public class EnemyControl : MonoBehaviour
 
     private void Shoot()
     {
-        if (Time.time > lastBulletFired + bulletCooldown)
+        if (Time.time > lastBulletFired + projectileCooldown)
         {
             lastBulletFired = Time.time;
-            GameObject newBullet = GameObject.Instantiate(bullet, muzzlePosition.position, transform.rotation);
-            newBullet.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed);
-        newBullet.GetComponent<BulletCollision>().damage = bulletDamage;
+            GameObject newBullet = Instantiate(projectilePrefab, muzzlePosition.position, muzzlePosition.rotation);
+            BulletCollision bulletController = newBullet.GetComponent<BulletCollision>();
+            bulletController.speed = projectileSpeed;
+            bulletController.damage = projectileDamage;
         }
     }
 }
