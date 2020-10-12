@@ -22,7 +22,7 @@ public class EnemyControl : MonoBehaviour
 
     void Update()
     {
-        if (PlayerControl.player == null)
+        if (PlayerControl.player == null || Time.timeScale == 0f)
         {
             return;
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newRangedWeaponTemplate", menuName = "ScriptableObjects/RangedWeapon Template")]
-public class RangedWeaponStats : ScriptableObject
+public class RangedWeaponStats : Item
 {
     [SerializeField]
     private GameObject projectilePrefab = null;

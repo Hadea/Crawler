@@ -6,27 +6,22 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
 
-    [SerializeField]
-    private GameObject pauseUI = null;
+    public GameObject pauseUI;
+    public GameObject inventoryUI;
 
     public int score = 0;
     private Health playerHealth;
 
-    [SerializeField]
-    private Text scoreText = null;
+    public Text scoreText = null;
 
-    [SerializeField]
-    private Text ammoText = null;
+    public Text ammoText = null;
 
-    [SerializeField]
-    private GameObject iconPrefab = null;
-    [SerializeField]
-    private Transform iconHolder = null;
-    [SerializeField]
-    private Vector3 iconOffset = Vector3.zero;
+    public GameObject iconPrefab = null;
+    public Transform iconHolder = null;
+    public Vector3 iconOffset = Vector3.zero;
     private List<GameObject> iconInstances;
 
-    private float lastPauseUIToggle;
+    private float lastUIToggle;
 
     private void Awake()
     {
@@ -43,11 +38,15 @@ public class UIManager : MonoBehaviour
     {
         UpdateHearthIconCount();
 
-        if (Input.GetButton("Cancel"))
+        if (Time.time > lastUIToggle + 0.1f)
         {
-            if (Time.time > lastPauseUIToggle + 0.5f)
+            if (Input.GetButtonDown("Cancel"))
             {
                 TogglePauseUI();
+            }
+            else if (Input.GetButtonDown("Inventory"))
+            {
+                ToggleInventoryUI();
             }
         }
     }
@@ -103,7 +102,16 @@ public class UIManager : MonoBehaviour
         if (pauseUI != null)
         {
             pauseUI.SetActive(!pauseUI.activeSelf);
-            lastPauseUIToggle = Time.time;
+            lastUIToggle = Time.time;
+        }
+    }
+
+    public void ToggleInventoryUI()
+    {
+        if (inventoryUI != null)
+        {
+            inventoryUI.SetActive(!inventoryUI.activeSelf);
+            lastUIToggle = Time.time;
         }
     }
 }

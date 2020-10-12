@@ -5,15 +5,27 @@ using UnityEngine.SceneManagement;
 
 public class PauseUI : MonoBehaviour
 {
-    private void OnEnable()
+    private Coroutine coroutine;
+
+    void Awake()
     {
-        Time.timeScale = 0f; //TimeFreeze set
+        gameObject.SetActive(false);
+    }
+
+    void OnEnable()
+    {
+        Time.timeScale = 0f;
+
+        coroutine = StartCoroutine(Coroutine());
     }
 
     public void Resume()
     {
-        gameObject.SetActive(false); //mit dem kleinen gameObject frage ich mich selbst ab.
-        Time.timeScale = 1f; //TimeFreeze reset
+        gameObject.SetActive(false);
+        Time.timeScale = 1f;
+
+        StopCoroutine(coroutine);
+        coroutine = null;
     }
 
     public void Exit()
@@ -24,8 +36,22 @@ public class PauseUI : MonoBehaviour
         Application.Quit();
     }
 
-    public void Hauptmenü()
+    public void MainMenu()
     {
         SceneManager.LoadScene(0);
+    }
+
+    private IEnumerator Coroutine()
+    {
+        yield return null;
+        for (; ; )
+        {
+            if (Input.GetButtonDown("Cancel"))
+            {
+                Resume();
+                yield break;
+            }
+            yield return null;
+        }
     }
 }

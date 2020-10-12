@@ -32,6 +32,10 @@ public class PlayerControl : MonoBehaviour
 
     void Update()
     {
+        if (Time.timeScale == 0f)
+        {
+            return;
+        }
         if (Time.frameCount == 2)
         {
             agent.enabled = true;
