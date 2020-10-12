@@ -8,7 +8,11 @@ public class Health : MonoBehaviour
     [SerializeField]
     private int maxHealth = 1;
 
-    public int currentHealth { get; private set; }
+    [SerializeField]
+    [ReadOnly]
+    private int currentHealth;
+
+    public int current { get { return currentHealth; } }
 
     // Start is called before the first frame update
     void Start()

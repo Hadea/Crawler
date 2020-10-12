@@ -14,7 +14,7 @@ public class HeightRaycast : MonoBehaviour
 
             Ray ray = new Ray(transform.TransformPoint(transform.InverseTransformPoint(child.position).ToWithY(0)), -transform.up);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, maxDistance, mask))
+            if (Physics.Raycast(ray, out hit, maxDistance, mask, QueryTriggerInteraction.Ignore))
             {
                 child.position = hit.point;
                 //child.up = hit.normal;

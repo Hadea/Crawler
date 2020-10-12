@@ -54,8 +54,8 @@ public class UIManager : MonoBehaviour
 
     private void UpdateHearthIconCount()
     {
-        int health = playerHealth.currentHealth / 2;
-        bool half = playerHealth.currentHealth % 2 > 0;
+        int health = playerHealth.current / 2;
+        bool half = playerHealth.current % 2 > 0;
         // if less icon are there as should be
         if (!half && iconInstances.Count > 0)
         {

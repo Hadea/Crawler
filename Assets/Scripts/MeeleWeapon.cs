@@ -9,7 +9,7 @@ public class MeeleWeapon : Weapon
     public void Attack(Transform hitArea)
     {
         anim.Play();
-        Collider[] colliders = Physics.OverlapBox(hitArea.transform.position, hitArea.transform.localScale * 0.5f, hitArea.transform.rotation);
+        Collider[] colliders = Physics.OverlapBox(hitArea.transform.position, hitArea.transform.localScale * 0.5f, hitArea.transform.rotation, new LayerMask().ToEverything(), QueryTriggerInteraction.Ignore);
         foreach (var collider in colliders)
         {
             if (!collider.isTrigger)

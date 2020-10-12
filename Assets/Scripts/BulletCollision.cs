@@ -14,7 +14,7 @@ public class BulletCollision : MonoBehaviour
     {
         Ray ray = transform.CreateForwardRay();
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, raycastLenght, raycastMask))
+        if (Physics.Raycast(ray, out hit, raycastLenght, raycastMask, QueryTriggerInteraction.Ignore))
         {
             OnHit(hit.transform);
         }

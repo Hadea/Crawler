@@ -7,16 +7,17 @@ public class EnemyControl : MonoBehaviour
     public float rotationSpeed = 90f;
     public float aggroRange = 15f;
     public LayerMask layerMaskForPlayerSearch;
-    public EnemyRangedAttack enemyAttackComponent;
+    public IEnemyAttackComponent enemyAttackComponent;
     private NavMeshAgent agent;
     private bool hasAggro;
     private Vector3 startPos;
 
-    void Start()
+    void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         startPos = transform.position;
         agent.enabled = true;
+        enemyAttackComponent = GetComponent<IEnemyAttackComponent>();
     }
 
     void Update()
@@ -34,6 +35,8 @@ public class EnemyControl : MonoBehaviour
         if (distance < aggroRange)
         {
             hasAggro = true;
+            agent.SetDestination(PlayerControl.player.transform.position);
+            agent.isStopped = false;
         }
         else
         {
@@ -48,30 +51,11 @@ public class EnemyControl : MonoBehaviour
             if (agent.hasPath ? agent.remainingDistance < aggroRange : true)
             {
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 100f, layerMaskForPlayerSearch))
+                if (Physics.Raycast(ray, out hit, 100f, layerMaskForPlayerSearch, QueryTriggerInteraction.Ignore))
                 {
                     if (hit.transform.GetComponent<PlayerControl>())
                     {
-
-                        Quaternion lookRotation = Quaternion.LookRotation(hit.transform.position - transform.position);
-                        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-
-                        agent.isStopped = true;
-                        if (Vector3.Distance(transform.position + transform.forward * distance, PlayerControl.player.transform.position) < 0.45f)
-                        {
-                            Attack();
-                            Debug.DrawLine(ray.origin, hit.point, Color.green);
-                        }
-                        else
-                        {
-                            Debug.DrawLine(ray.origin, hit.point, Color.blue);
-                        }
-                    }
-                    else
-                    {
-                        Debug.DrawLine(transform.position, hit.point, Color.red);
-                        agent.SetDestination(PlayerControl.player.transform.position);
-                        agent.isStopped = false;
+                        enemyAttackComponent.Attack(ray, distance);
                     }
                 }
             }
@@ -84,9 +68,5 @@ public class EnemyControl : MonoBehaviour
         UnityEditor.Handles.color = Color.gray;
         UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, aggroRange);
 #endif
-    }
-
-    private void Attack()
-    {
     }
 }
