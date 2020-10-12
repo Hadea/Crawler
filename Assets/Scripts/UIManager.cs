@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager manager;
+    public static UIManager instance;
 
     [SerializeField]
     private GameObject pauseUI = null;
@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
-        manager = this;
+        instance = this;
     }
 
     void Start()

@@ -4,28 +4,19 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyControl : MonoBehaviour
 {
-    private NavMeshAgent agent;
-
-    public float aggroRange = 15f;
-
-    public LayerMask layerMaskForPlayerSearch;
-
     public float rotationSpeed = 90f;
-
-    public int projectileDamage = 1;
-    public GameObject projectilePrefab;
-    public Transform muzzlePosition;
-
-    public float projectileSpeed = 30f;
-    public float projectileCooldown = 1f;
-    private float lastBulletFired;
-
+    public float aggroRange = 15f;
+    public LayerMask layerMaskForPlayerSearch;
+    public EnemyRangedAttack enemyAttackComponent;
+    private NavMeshAgent agent;
     private bool hasAggro;
+    private Vector3 startPos;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        
+        startPos = transform.position;
+        agent.enabled = true;
     }
 
     void Update()
@@ -39,58 +30,63 @@ public class EnemyControl : MonoBehaviour
             agent.enabled = true;
         }
 
-        // Check if player is in aggro range
-        float distance = Vector3.Distance(PlayerControl.player.transform.position, transform.position);
-        if ((distance < aggroRange || hasAggro) && (agent.hasPath ? agent.remainingDistance < aggroRange : true))
+        float distance = Vector3.Distance(transform.position, PlayerControl.player.transform.position);
+        if (distance < aggroRange)
         {
             hasAggro = true;
-            // Check if player is visible from own position
+        }
+        else
+        {
+            hasAggro = false;
+            agent.SetDestination(startPos);
+            agent.isStopped = false;
+        }
+
+        if (hasAggro)
+        {
             Ray ray = new Ray(transform.position + Vector3.up, PlayerControl.player.transform.position - transform.position);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 100f, layerMaskForPlayerSearch))
+            if (agent.hasPath ? agent.remainingDistance < aggroRange : true)
             {
-                // If player is found, start shooting
-                if (hit.transform.GetComponent<PlayerControl>())
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit, 100f, layerMaskForPlayerSearch))
                 {
-
-                    // rotation for looking towards the player
-                    Quaternion lookRotation = Quaternion.LookRotation(hit.transform.position - transform.position);
-
-                    // slowly rotate towards player
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-
-                    // stop movement
-                    agent.isStopped = true;
-                    if (Vector3.Distance(transform.position + transform.forward * distance, PlayerControl.player.transform.position) < 0.45f)
+                    if (hit.transform.GetComponent<PlayerControl>())
                     {
-                        Shoot();
-                        Debug.DrawLine(ray.origin, hit.point, Color.green);
+
+                        Quaternion lookRotation = Quaternion.LookRotation(hit.transform.position - transform.position);
+                        transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+
+                        agent.isStopped = true;
+                        if (Vector3.Distance(transform.position + transform.forward * distance, PlayerControl.player.transform.position) < 0.45f)
+                        {
+                            Attack();
+                            Debug.DrawLine(ray.origin, hit.point, Color.green);
+                        }
+                        else
+                        {
+                            Debug.DrawLine(ray.origin, hit.point, Color.blue);
+                        }
                     }
                     else
                     {
-                        Debug.DrawLine(ray.origin, hit.point, Color.blue);
+                        Debug.DrawLine(transform.position, hit.point, Color.red);
+                        agent.SetDestination(PlayerControl.player.transform.position);
+                        agent.isStopped = false;
                     }
-                }
-                else
-                {
-                    Debug.DrawLine(transform.position, hit.point, Color.red);
-                    // otherwise, walk towards the player
-                    agent.SetDestination(PlayerControl.player.transform.position);
-                    agent.isStopped = false;
                 }
             }
         }
     }
 
-    private void Shoot()
+    void OnDrawGizmosSelected()
     {
-        if (Time.time > lastBulletFired + projectileCooldown)
-        {
-            lastBulletFired = Time.time;
-            GameObject newBullet = Instantiate(projectilePrefab, muzzlePosition.position, muzzlePosition.rotation);
-            BulletCollision bulletController = newBullet.GetComponent<BulletCollision>();
-            bulletController.speed = projectileSpeed;
-            bulletController.damage = projectileDamage;
-        }
+#if UNITY_EDITOR
+        UnityEditor.Handles.color = Color.gray;
+        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, aggroRange);
+#endif
+    }
+
+    private void Attack()
+    {
     }
 }

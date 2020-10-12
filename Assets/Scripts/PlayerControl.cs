@@ -70,9 +70,9 @@ public class PlayerControl : MonoBehaviour
 
     void OnDestroy()
     {
-        if (UIManager.manager != null)
+        if (UIManager.instance != null)
         {
-            UIManager.manager.TogglePauseUI();
+            UIManager.instance.TogglePauseUI();
         }
     }
 

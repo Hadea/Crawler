@@ -46,9 +46,9 @@ public class Looting : MonoBehaviour
 
         } while (vector.magnitude > size);
         // increase score
-        if (UIManager.manager != null)
+        if (UIManager.instance != null)
         {
-            UIManager.manager.score++;
+            UIManager.instance.score++;
         }
         Destroy(coin);
     }
