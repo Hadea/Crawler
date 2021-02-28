@@ -2,28 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Inventory : MonoBehaviour
+[System.Serializable]
+public class Inventory
 {
-    public static Inventory instance;
-
     [SerializeField]
-    //[ReadOnly]
     private List<Item> items = new List<Item>();
+
     public int itemsCount { get { return items.Count; } }
     public int space = 20;
 
     public delegate void OnItemChanged();
     public OnItemChanged onItemChanged;
-
-    private void Awake()
-    {
-        instance = this;
-    }
-
-    void Start()
-    {
-        onItemChanged?.Invoke();
-    }
 
     public bool Add(Item item)
     {

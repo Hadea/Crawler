@@ -2,21 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Equipment : MonoBehaviour
+[System.Serializable]
+public class Equipment
 {
-    public static Equipment instance;
-
+    [SerializeField]
     private Item[] currentEquipment;
 
     public delegate void OnEquipmentChanged(Item newItem, Item oldItem);
     public OnEquipmentChanged onEquipmentChanged;
 
-    void Awake()
-    {
-        instance = this;
-    }
-
-    private void Start()
+    public Equipment()
     {
         int numSlots = System.Enum.GetNames(typeof(Item.EquipmentTypes)).Length - 1;
         currentEquipment = new Item[numSlots];
@@ -34,7 +29,7 @@ public class Equipment : MonoBehaviour
         Item oldItem = currentEquipment[slotIndex];
         if (oldItem != null)
         {
-            Inventory.instance.Add(oldItem);
+            GameManager.instance.player1Stats.inventory.Add(oldItem);
         }
 
         currentEquipment[slotIndex] = newItem;
@@ -47,7 +42,7 @@ public class Equipment : MonoBehaviour
         Item oldItem = currentEquipment[slotIndex];
         if (oldItem != null)
         {
-            Inventory.instance.Add(oldItem);
+            GameManager.instance.player1Stats.inventory.Add(oldItem);
             currentEquipment[slotIndex] = null;
 
             onEquipmentChanged(null, oldItem);

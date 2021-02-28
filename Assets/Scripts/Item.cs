@@ -15,11 +15,13 @@ public class Item : ScriptableObject
 
     public new string name;
     public EquipmentTypes equipmentType;
+
     public Sprite sprite;
+    public GameObject prefab;
 
     public virtual void Use()
     {
-        Equipment.instance.Equip(this);
-        Inventory.instance.Remove(this);
+        GameManager.instance.player1Stats.equipment.Equip(this);
+        GameManager.instance.player1Stats.inventory.Remove(this);
     }
 }

@@ -6,11 +6,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
 
-    public GameObject pauseUI;
-    public GameObject inventoryUI;
-
-    public int score = 0;
-    private Health playerHealth;
+    public PauseUI pauseUI;
+    public InventoryUI inventoryUI;
 
     public Text scoreText = null;
 
@@ -23,15 +20,15 @@ public class UIManager : MonoBehaviour
 
     private float lastUIToggle;
 
-    private void Awake()
+    void Awake()
     {
         instance = this;
+        iconInstances = new List<GameObject>();
     }
 
     void Start()
     {
-        playerHealth = PlayerControl.player.GetComponent<Health>();
-        iconInstances = new List<GameObject>();
+        inventoryUI.Init();
     }
 
     private void Update()
@@ -53,8 +50,9 @@ public class UIManager : MonoBehaviour
 
     private void UpdateHearthIconCount()
     {
-        int health = playerHealth.current / 2;
-        bool half = playerHealth.current % 2 > 0;
+        GameManager gameManager = GameManager.instance;
+        int health = gameManager.player1Stats.playerHealth.current / 2;
+        bool half = gameManager.player1Stats.playerHealth.current % 2 > 0;
         // if less icon are there as should be
         if (!half && iconInstances.Count > 0)
         {
@@ -90,7 +88,7 @@ public class UIManager : MonoBehaviour
 
     void LateUpdate()
     {
-        scoreText.text = score.ToString();
+        scoreText.text = GameManager.instance.player1Stats.coins.ToString();
         if (PlayerControl.player != null)
         {
             ammoText.text = PlayerControl.player.ammo.ToString();
@@ -101,7 +99,7 @@ public class UIManager : MonoBehaviour
     {
         if (pauseUI != null)
         {
-            pauseUI.SetActive(!pauseUI.activeSelf);
+            pauseUI.gameObject.SetActive(!pauseUI.gameObject.activeSelf);
             lastUIToggle = Time.time;
         }
     }
@@ -110,7 +108,7 @@ public class UIManager : MonoBehaviour
     {
         if (inventoryUI != null)
         {
-            inventoryUI.SetActive(!inventoryUI.activeSelf);
+            inventoryUI.gameObject.SetActive(!inventoryUI.gameObject.activeSelf);
             lastUIToggle = Time.time;
         }
     }

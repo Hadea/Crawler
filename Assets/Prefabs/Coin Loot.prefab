@@ -106,9 +106,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6200669155225722963}
   - component: {fileID: 6200669155225722972}
+  - component: {fileID: 1113906684458853952}
   m_Layer: 12
   m_Name: Coin Loot
-  m_TagString: Coin
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,3 +142,17 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.4
   m_Center: {x: 0, y: 0.6, z: 0}
+--- !u!114 &1113906684458853952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6200669155225722962}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a188a5283d6ce6d43a23d1c861183015, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCoin: 1
+  itemReference: {fileID: 0}

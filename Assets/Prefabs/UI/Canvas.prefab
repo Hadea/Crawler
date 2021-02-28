@@ -209,6 +209,7 @@ GameObject:
   - component: {fileID: 750144384698331443}
   - component: {fileID: 750144384698331442}
   - component: {fileID: 750144384698331446}
+  - component: {fileID: 1768380802}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -310,12 +311,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseUI: {fileID: 0}
-  score: 0
+  inventoryUI: {fileID: 0}
   scoreText: {fileID: 750144383119667544}
   ammoText: {fileID: 4379770531661921036}
   iconPrefab: {fileID: 6828375406670656011, guid: 71667ed7ffbbfc041a497ae65175bb8d, type: 3}
   iconHolder: {fileID: 750144383617728563}
   iconOffset: {x: 60, y: 0, z: 0}
+--- !u!114 &1768380802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750144384698331441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 425881961b913754295f38bf5ab3d39d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player1Stats:
+    inventory:
+      items: []
+      space: 20
+    equipment:
+      currentEquipment:
+      - {fileID: 0}
+      - {fileID: 0}
+      - {fileID: 0}
+    coins: 0
 --- !u!1 &750144384863641147
 GameObject:
   m_ObjectHideFlags: 0

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventorySlot : MonoBehaviour
+public class InventoryUISlot : MonoBehaviour
 {
+    public Item item { get; private set; }
     private Image icon;
     private Button toggle;
-    private Item item;
     private InventoryUI inventoryUI;
 
     void Awake()
@@ -15,7 +15,7 @@ public class InventorySlot : MonoBehaviour
         toggle = GetComponent<Button>();
         icon = transform.GetChild(0).GetComponent<Image>();
         inventoryUI = GetComponentInParent<InventoryUI>();
-        ClearSlot();
+        Clear();
     }
 
     public void AddItem(Item newItem)
@@ -26,7 +26,7 @@ public class InventorySlot : MonoBehaviour
         icon.sprite = item.sprite;
     }
 
-    public void ClearSlot()
+    public void Clear()
     {
         icon.sprite = null;
         icon.enabled = false;
@@ -36,6 +36,14 @@ public class InventorySlot : MonoBehaviour
     public void Select()
     {
         toggle.interactable = false;
-        inventoryUI.SelectItem(item);
+        inventoryUI.SelectItem(this);
+    }
+
+    public void Deselect()
+    {
+        if (item != null)
+        {
+            toggle.interactable = true;
+        }
     }
 }

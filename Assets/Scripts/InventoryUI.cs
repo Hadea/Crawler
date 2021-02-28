@@ -6,25 +6,21 @@ using UnityEngine.UI;
 public class InventoryUI : MonoBehaviour
 {
     private Coroutine coroutine;
-    private Inventory inventory;
 
     public Transform slotsParent;
-    private InventorySlot[] slots;
+    private InventoryUISlot[] slots;
 
-    private Item selected;
+    public InventoryUISlot selected { get; private set; }
 
     public Button removeButton;
 
     void Awake()
     {
         gameObject.SetActive(false);
-        inventory = Inventory.instance;
-    }
 
-    void Start()
-    {
-        inventory.onItemChanged += UpdateUI;
-        slots = slotsParent.GetComponentsInChildren<InventorySlot>();
+        slots = slotsParent.GetComponentsInChildren<InventoryUISlot>();
+
+        removeButton.interactable = false;
     }
 
     void OnEnable()
@@ -32,8 +28,18 @@ public class InventoryUI : MonoBehaviour
         Time.timeScale = 0f;
 
         coroutine = StartCoroutine(Coroutine());
+    }
 
+    void OnDisable()
+    {
+        removeButton.interactable = false;
         selected = null;
+    }
+
+    public void Init()
+    {
+        selected = null;
+        GameManager.instance.player1Stats.inventory.onItemChanged += UpdateUI;
     }
 
     public void Resume()
@@ -61,6 +67,7 @@ public class InventoryUI : MonoBehaviour
 
     private void UpdateUI()
     {
+        Inventory inventory = GameManager.instance.player1Stats.inventory;
         for (int i = 0; i < slots.Length; i++)
         {
             if (i < inventory.itemsCount)
@@ -69,26 +76,34 @@ public class InventoryUI : MonoBehaviour
             }
             else
             {
-                slots[i].ClearSlot();
+                slots[i].Clear();
             }
         }
     }
 
-    public void SelectItem(Item item)
+    public void SelectItem(InventoryUISlot itemSlot)
     {
-        selected = item;
+        selected = itemSlot;
+        for (int i = 0; i < slots.Length; i++)
+        {
+            if (slots[i] != itemSlot)
+            {
+                slots[i].Deselect();
+            }
+        }
         removeButton.interactable = true;
     }
 
     public void RemoveSelectedItem()
     {
-        inventory.Remove(selected);
+        GameManager.instance.player1Stats.inventory.Remove(selected.item);
+        selected.Clear();
         selected = null;
         removeButton.interactable = false;
     }
 
     public void UseSelectedItem()
     {
-        selected?.Use();
+        selected.item?.Use();
     }
 }

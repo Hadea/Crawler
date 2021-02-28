@@ -27,7 +27,7 @@ public class PlayerControl : MonoBehaviour
     void Start()
     {
         agent.enabled = false;
-        rangedWeapon.ToggleRenderers(false);
+        rangedWeapon?.ToggleRenderers(false);
     }
 
     void Update()
@@ -125,10 +125,4 @@ public class PlayerControl : MonoBehaviour
 
         transform.rotation = Quaternion.LookRotation((target - transform.position).ToWithY(0f).normalized, Vector3.up);
     }
-
-
-
-
-
-
 }

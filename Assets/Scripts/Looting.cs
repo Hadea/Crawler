@@ -4,52 +4,51 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Looting : MonoBehaviour
 {
-    [SerializeField]
-    private string[] lootTags = new string[0];
-
     private void OnTriggerEnter(Collider other)
     {
-        // Check if object is loot
-        foreach (var tag in lootTags)
+        Lootable loot = other.GetComponent<Lootable>();
+
+        if (loot != null)
         {
-            if (other.gameObject.tag == tag)
-            {
-                CollectLoot(other.gameObject);
-            }
+            StartCoroutine(SuckInItem(loot));
         }
     }
 
-    private void CollectLoot(GameObject loot)
+    private void CollectItem(Lootable loot)
     {
-        // do something with loot depending on type
-        switch (loot.tag)
+        if (loot != null)
         {
-            case "Coin":
-                StartCoroutine(CollectCoin(loot));
-                break;
+            if (loot.isCoin)
+            {
+                GameManager.instance.player1Stats.coins++;
+            }
+            else
+            {
+                GameManager.instance.player1Stats.inventory.Add(loot.itemReference);
+            }
+            Destroy(loot.gameObject);
         }
-        // destroy loot object in game world
+        else
+        {
+            Debug.LogError("Loot item could not be handled", loot);
+        }
     }
 
-    private IEnumerator CollectCoin(GameObject coin)
+    private IEnumerator SuckInItem(Lootable loot)
     {
         float size = 0.55f;
-        float sqrStartDistance = (transform.position - coin.transform.position).sqrMagnitude;
+        float sqrStartDistance = (transform.position - loot.transform.position).sqrMagnitude;
         float speed = 0f;
         Vector3 vector;
         do
         {
-            vector = transform.position - coin.transform.position;
+            vector = transform.position - loot.transform.position;
             speed = Mathf.Max(sqrStartDistance / (vector.sqrMagnitude) + 0.1f, speed);
-            coin.transform.position = Vector3.MoveTowards(coin.transform.position, transform.position, speed * Time.deltaTime);
+            loot.transform.position = Vector3.MoveTowards(loot.transform.position, transform.position, speed * Time.deltaTime);
             yield return null;
 
         } while (vector.magnitude > size);
-        // increase score
-        if (UIManager.instance != null)
-        {
-            UIManager.instance.score++;
-        }
-        Destroy(coin);
+
+        CollectItem(loot);
     }
 }
