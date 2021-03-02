@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class MeeleWeapon : Weapon
 {
+    public MeeleWeaponStats stats;
     public Animation anim;
 
     public void Attack(Transform hitArea)
@@ -26,7 +27,7 @@ public class MeeleWeapon : Weapon
         if (health != null)
         {
             // deal damage to target
-            health.TakeDamage(1);
+            health.TakeDamage(stats.dmg);
         }
     }
 }

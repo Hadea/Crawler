@@ -9,6 +9,7 @@ public class InventoryUISlot : MonoBehaviour
     private Image icon;
     private Button toggle;
     private InventoryUI inventoryUI;
+    public bool isEquipment;
 
     void Awake()
     {
@@ -20,6 +21,10 @@ public class InventoryUISlot : MonoBehaviour
 
     public void AddItem(Item newItem)
     {
+        if (newItem == null)
+        {
+            throw new System.NullReferenceException();
+        }
         item = newItem;
         icon.enabled = true;
         toggle.interactable = true;
@@ -28,6 +33,7 @@ public class InventoryUISlot : MonoBehaviour
 
     public void Clear()
     {
+        item = null;
         icon.sprite = null;
         icon.enabled = false;
         toggle.interactable = false;
@@ -36,7 +42,7 @@ public class InventoryUISlot : MonoBehaviour
     public void Select()
     {
         toggle.interactable = false;
-        inventoryUI.SelectItem(this);
+        inventoryUI.SelectItem(this, isEquipment);
     }
 
     public void Deselect()

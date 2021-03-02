@@ -7,18 +7,21 @@ public class InventoryUI : MonoBehaviour
 {
     private Coroutine coroutine;
 
-    public Transform slotsParent;
-    private InventoryUISlot[] slots;
+    public Transform inventorySlotsParent;
+    private InventoryUISlot[] inventorySlots;
+
+    public InventoryUISlot[] equipmentSlots;
 
     public InventoryUISlot selected { get; private set; }
 
     public Button removeButton;
+    public Button equipButton;
 
     void Awake()
     {
         gameObject.SetActive(false);
 
-        slots = slotsParent.GetComponentsInChildren<InventoryUISlot>();
+        inventorySlots = inventorySlotsParent.GetComponentsInChildren<InventoryUISlot>();
 
         removeButton.interactable = false;
     }
@@ -40,6 +43,7 @@ public class InventoryUI : MonoBehaviour
     {
         selected = null;
         GameManager.instance.player1Stats.inventory.onItemChanged += UpdateUI;
+        GameManager.instance.player1Stats.equipment.onEquipmentChanged += UpdateUI;
     }
 
     public void Resume()
@@ -65,45 +69,101 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
+    private void UpdateUI(Item i, Item j)
+    {
+        UpdateUI();
+    }
+
     private void UpdateUI()
     {
         Inventory inventory = GameManager.instance.player1Stats.inventory;
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < inventorySlots.Length; i++)
         {
             if (i < inventory.itemsCount)
             {
-                slots[i].AddItem(inventory.GetItem(i));
+                Item item = inventory.GetItem(i);
+                inventorySlots[i].AddItem(item);
             }
             else
             {
-                slots[i].Clear();
+                inventorySlots[i].Clear();
+            }
+        }
+        Equipment equipment = GameManager.instance.player1Stats.equipment;
+        for (int i = 0; i < equipmentSlots.Length; i++)
+        {
+            Item item = equipment.GetItem(i);
+            if (item != null)
+            {
+                equipmentSlots[i].AddItem(item);
+            }
+            else
+            {
+                equipmentSlots[i].Clear();
             }
         }
     }
 
-    public void SelectItem(InventoryUISlot itemSlot)
+    public void SelectItem(InventoryUISlot itemSlot, bool equipped)
     {
         selected = itemSlot;
-        for (int i = 0; i < slots.Length; i++)
+        for (int i = 0; i < inventorySlots.Length; i++)
         {
-            if (slots[i] != itemSlot)
+            if (inventorySlots[i] != itemSlot)
             {
-                slots[i].Deselect();
+                inventorySlots[i].Deselect();
+            }
+        }
+        for (int i = 0; i < equipmentSlots.Length; i++)
+        {
+            if (equipmentSlots[i] != itemSlot)
+            {
+                equipmentSlots[i].Deselect();
             }
         }
         removeButton.interactable = true;
+        equipButton.interactable = !equipped;
     }
 
     public void RemoveSelectedItem()
     {
-        GameManager.instance.player1Stats.inventory.Remove(selected.item);
+        Inventory inventory = GameManager.instance.player1Stats.inventory;
+        Equipment equipment = GameManager.instance.player1Stats.equipment;
+
+
+        bool wasEquiopment = selected.isEquipment;
+        Item item = selected.item;
         selected.Clear();
         selected = null;
+        if (wasEquiopment)
+        {
+            equipment.UnEquip(item.equipmentType);
+        }
+        else
+        {
+            inventory.Remove(item);
+            item = null;
+        }
+        equipButton.interactable = false;
         removeButton.interactable = false;
     }
 
-    public void UseSelectedItem()
+    public void EquipSelectedItem()
     {
-        selected.item?.Use();
+        Inventory inventory = GameManager.instance.player1Stats.inventory;
+        Equipment equipment = GameManager.instance.player1Stats.equipment;
+
+        if (selected.isEquipment)
+        {
+            Debug.LogError("Item is already equipped", equipButton);
+            return;
+        }
+        Item item = selected.item;
+        selected.Clear();
+        selected = null;
+        equipButton.interactable = false;
+        removeButton.interactable = false;
+        inventory.Remove(item);
+        equipment.Equip(item);
     }
 }

@@ -18,10 +18,4 @@ public class Item : ScriptableObject
 
     public Sprite sprite;
     public GameObject prefab;
-
-    public virtual void Use()
-    {
-        GameManager.instance.player1Stats.equipment.Equip(this);
-        GameManager.instance.player1Stats.inventory.Remove(this);
-    }
 }

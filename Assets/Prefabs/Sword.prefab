@@ -337,4 +337,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6830481f5fc4c6542a495fe515224071, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: c5ad6e619fc2e294194aa1fa18fd4781, type: 2}
   anim: {fileID: 3574425696417185959}
