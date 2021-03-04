@@ -19,16 +19,21 @@ public class InventoryUI : MonoBehaviour
 
     void Awake()
     {
-        gameObject.SetActive(false);
+        selected = null;
 
-        inventorySlots = inventorySlotsParent.GetComponentsInChildren<InventoryUISlot>();
+        GameManager.instance.player1Stats.inventory.onItemChanged += UpdateUI;
+        GameManager.instance.player1Stats.equipment.onEquipmentChanged += UpdateUI;
+
+        inventorySlots = inventorySlotsParent.GetComponentsInChildren<InventoryUISlot>(true);
 
         removeButton.interactable = false;
+
+        gameObject.SetActive(false);
     }
 
     void OnEnable()
     {
-        Time.timeScale = 0f;
+        Time.timeScale = 0f;// float.Epsilon;
 
         coroutine = StartCoroutine(Coroutine());
     }
@@ -37,13 +42,6 @@ public class InventoryUI : MonoBehaviour
     {
         removeButton.interactable = false;
         selected = null;
-    }
-
-    public void Init()
-    {
-        selected = null;
-        GameManager.instance.player1Stats.inventory.onItemChanged += UpdateUI;
-        GameManager.instance.player1Stats.equipment.onEquipmentChanged += UpdateUI;
     }
 
     public void Resume()
@@ -131,12 +129,13 @@ public class InventoryUI : MonoBehaviour
         Equipment equipment = GameManager.instance.player1Stats.equipment;
 
 
-        bool wasEquiopment = selected.isEquipment;
         Item item = selected.item;
+        bool wasEquiopment = selected.isEquipment;
         selected.Clear();
         selected = null;
         if (wasEquiopment)
         {
+            GameManager.instance.SetupEquippedItem(item.equipmentType, null);
             equipment.UnEquip(item.equipmentType);
         }
         else
@@ -146,6 +145,7 @@ public class InventoryUI : MonoBehaviour
         }
         equipButton.interactable = false;
         removeButton.interactable = false;
+
     }
 
     public void EquipSelectedItem()
@@ -165,5 +165,7 @@ public class InventoryUI : MonoBehaviour
         removeButton.interactable = false;
         inventory.Remove(item);
         equipment.Equip(item);
+
+        GameManager.instance.SetupEquippedItem(item.equipmentType, item);
     }
 }

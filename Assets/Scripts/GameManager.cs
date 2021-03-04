@@ -7,7 +7,8 @@ public class GameManager : MonoBehaviour
     [System.Serializable]
     public class PlayerStats
     {
-        public Health playerHealth { get; set; }
+        public PlayerControl player { get; set; }
+        public Health health { get; set; }
         public Inventory inventory;
         public Equipment equipment;
         public int coins = 0;
@@ -32,8 +33,14 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        player1Stats.playerHealth = PlayerControl.player.GetComponent<Health>();
+        player1Stats.player = PlayerControl.player;
+        player1Stats.health = player1Stats.player.GetComponent<Health>();
 
         player1Stats.inventory.onItemChanged?.Invoke();
+    }
+
+    public void SetupEquippedItem(Item.EquipmentTypes slotType, Item item)
+    {
+        player1Stats.player.SpawnOrDeleteEquippedItem(slotType, item);
     }
 }

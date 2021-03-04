@@ -7,8 +7,10 @@ public class PlayerControl : MonoBehaviour
 
     public ParticleSystem chargeEffect;
 
-    public MeeleWeapon meeleWeapon;
-    public RangedWeapon rangedWeapon;
+    public Transform meeleHand = null;
+    public Transform rangedHand = null;
+    private MeeleWeapon meeleWeapon;
+    private RangedWeapon rangedWeapon;
     public int ammo = 50;
 
     private float lastFired;
@@ -56,8 +58,8 @@ public class PlayerControl : MonoBehaviour
                 chargeStart = Time.time;
                 chargeEffect?.Play(true);
 
-                meeleWeapon.ToggleRenderers(false);
-                rangedWeapon.ToggleRenderers(true);
+                //meeleWeapon.ToggleRenderers(false);
+                //rangedWeapon.ToggleRenderers(true);
             }
             if (Input.GetButtonUp("Fire2"))
             {
@@ -66,8 +68,8 @@ public class PlayerControl : MonoBehaviour
                 chargeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                 ammo--;
 
-                meeleWeapon.ToggleRenderers(true);
-                rangedWeapon.ToggleRenderers(false);
+                //meeleWeapon.ToggleRenderers(true);
+                //rangedWeapon.ToggleRenderers(false);
             }
         }
     }
@@ -124,5 +126,50 @@ public class PlayerControl : MonoBehaviour
         }
 
         transform.rotation = Quaternion.LookRotation((target - transform.position).ToWithY(0f).normalized, Vector3.up);
+    }
+
+    public void SpawnOrDeleteEquippedItem(Item.EquipmentTypes slotType, Item item)
+    {
+        Transform holder = null;
+        switch (slotType)
+        {
+            case Item.EquipmentTypes.MeeleWeapon:
+                holder = meeleHand;
+                meeleWeapon = null;
+                break;
+            case Item.EquipmentTypes.RangedWeapon:
+                holder = rangedHand;
+                rangedWeapon = null;
+                break;
+            case Item.EquipmentTypes.Armor:
+                throw new System.NotImplementedException();
+                //break;
+        }
+
+        for (int i = 0; i < holder.childCount; i++)
+        {
+            GameObject child = holder.GetChild(i).gameObject;
+            Destroy(child);
+        }
+
+        if (item == null)
+        {
+            return;
+        }
+        GameObject instance = Instantiate(item.prefab, holder);
+        instance.SetLayerRecursivly(LayerMask.NameToLayer("Player"));
+
+        switch (slotType)
+        {
+            case Item.EquipmentTypes.MeeleWeapon:
+                meeleWeapon = instance.GetComponent<MeeleWeapon>();
+                break;
+            case Item.EquipmentTypes.RangedWeapon:
+                rangedWeapon = instance.GetComponent<RangedWeapon>();
+                break;
+            case Item.EquipmentTypes.Armor:
+                throw new System.NotImplementedException();
+                //break;
+        }
     }
 }

@@ -10,6 +10,11 @@ public class BulletCollision : MonoBehaviour
     public float stuckTime = 5f;
     public int damage { set; private get; }
 
+    void Start()
+    {
+        Destroy(gameObject, 10f);
+    }
+
     void Update()
     {
         Ray ray = transform.CreateForwardRay();

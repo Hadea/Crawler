@@ -26,12 +26,7 @@ public class UIManager : MonoBehaviour
         iconInstances = new List<GameObject>();
     }
 
-    void Start()
-    {
-        inventoryUI.Init();
-    }
-
-    private void Update()
+    void Update()
     {
         UpdateHearthIconCount();
 
@@ -51,8 +46,8 @@ public class UIManager : MonoBehaviour
     private void UpdateHearthIconCount()
     {
         GameManager gameManager = GameManager.instance;
-        int health = gameManager.player1Stats.playerHealth.current / 2;
-        bool half = gameManager.player1Stats.playerHealth.current % 2 > 0;
+        int health = gameManager.player1Stats.health.current / 2;
+        bool half = gameManager.player1Stats.health.current % 2 > 0;
         // if less icon are there as should be
         if (!half && iconInstances.Count > 0)
         {
