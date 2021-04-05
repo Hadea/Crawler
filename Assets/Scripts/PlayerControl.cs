@@ -16,6 +16,8 @@ public class PlayerControl : MonoBehaviour
     private float lastFired;
     private float chargeStart;
 
+    public LayerMask targetMask;
+    public float attackRange = 1.3f;
     public Transform hitArea;
 
     private NavMeshAgent agent;
@@ -43,14 +45,26 @@ public class PlayerControl : MonoBehaviour
             agent.enabled = true;
             return;
         }
-        Movement();
-        Rotation();
-        /*
-        if (Input.GetButton("Fire1") && !HitAnimator.isPlaying)
+
+        bool doAttack = false;
+        if (meeleWeapon != null && Input.GetButton("Fire1"))
         {
-            meeleWeapon.Attack(hitArea);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            RaycastHit raycastHit;
+            if (Physics.Raycast(ray, out raycastHit, Mathf.Infinity, targetMask) && Vector3.Distance(raycastHit.transform.position, transform.position) < attackRange + 0.5f)
+            {
+                doAttack = true;
+                meeleWeapon.Attack(hitArea);
+            }
         }
-        */
+
+        if (!doAttack)
+        {
+            Movement();
+        }
+        Rotation();
+
         if (rangedWeapon != null && ammo > 0 && Time.time > lastFired + rangedWeapon.stats.cooldown)
         {
             if (Input.GetButtonDown("Fire2"))
@@ -58,8 +72,8 @@ public class PlayerControl : MonoBehaviour
                 chargeStart = Time.time;
                 chargeEffect?.Play(true);
 
-                //meeleWeapon.ToggleRenderers(false);
-                //rangedWeapon.ToggleRenderers(true);
+                meeleWeapon.ToggleRenderers(false);
+                rangedWeapon.ToggleRenderers(true);
             }
             if (Input.GetButtonUp("Fire2"))
             {
@@ -68,8 +82,8 @@ public class PlayerControl : MonoBehaviour
                 chargeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
                 ammo--;
 
-                //meeleWeapon.ToggleRenderers(true);
-                //rangedWeapon.ToggleRenderers(false);
+                meeleWeapon.ToggleRenderers(true);
+                rangedWeapon.ToggleRenderers(false);
             }
         }
     }

@@ -6,7 +6,7 @@ public class Weapon : MonoBehaviour
 {
     private Renderer[] renderers;
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         renderers = GetComponentsInChildren<Renderer>();
     }

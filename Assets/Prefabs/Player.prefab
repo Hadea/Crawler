@@ -5269,6 +5269,10 @@ MonoBehaviour:
   meeleHand: {fileID: 7254481560909295842}
   rangedHand: {fileID: 8958650653114831795}
   ammo: 50
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  attackRange: 1.3
   hitArea: {fileID: 1670691144}
 --- !u!114 &7509544935559080844
 MonoBehaviour:

@@ -17,15 +17,13 @@ public class BulletCollision : MonoBehaviour
 
     void Update()
     {
+        transform.Translate(Vector3.forward * speed * Time.deltaTime, Space.Self);
+
         Ray ray = transform.CreateForwardRay();
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, raycastLenght, raycastMask, QueryTriggerInteraction.Ignore))
         {
             OnHit(hit.transform);
-        }
-        else
-        {
-            transform.Translate(Vector3.forward * speed * Time.deltaTime, Space.Self);
         }
     }
 

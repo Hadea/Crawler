@@ -171,7 +171,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7113661652240956739}
-  - component: {fileID: 3574425696417185959}
+  - component: {fileID: 673521798335333777}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -195,8 +195,8 @@ Transform:
   - {fileID: 6573095846233616916}
   m_Father: {fileID: 8381493157143244058}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!111 &3574425696417185959
+  m_LocalEulerAnglesHint: {x: 77.696, y: -31.487, z: -9.135}
+--- !u!111 &673521798335333777
 Animation:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -338,4 +338,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: c5ad6e619fc2e294194aa1fa18fd4781, type: 2}
-  anim: {fileID: 3574425696417185959}
+  anim: {fileID: 673521798335333777}
+  hitRange: 1.25

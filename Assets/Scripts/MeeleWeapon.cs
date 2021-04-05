@@ -7,8 +7,21 @@ public class MeeleWeapon : Weapon
     public MeeleWeaponStats stats;
     public Animation anim;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        if (anim == null)
+        {
+            anim = GetComponentInChildren<Animation>();
+        }
+    }
+
     public void Attack(Transform hitArea)
     {
+        if (anim.isPlaying)
+        {
+            return;
+        }
         anim.Play();
         Collider[] colliders = Physics.OverlapBox(hitArea.transform.position, hitArea.transform.localScale * 0.5f, hitArea.transform.rotation, new LayerMask().ToEverything(), QueryTriggerInteraction.Ignore);
         foreach (var collider in colliders)
