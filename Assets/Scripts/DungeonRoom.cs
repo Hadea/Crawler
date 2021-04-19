@@ -21,9 +21,10 @@ public class DungeonRoom : MonoBehaviour
 
     public static void DrawBounds(Bounds bounds, Vector3 position, Quaternion rotation, Color color)
     {
-        Debug.DrawLine(position + rotation * bounds.GetTopLeft2D().ToVector3XZ(), position + rotation * bounds.GetTopRight2D().ToVector3XZ(), color);
-        Debug.DrawLine(position + rotation * bounds.GetTopLeft2D().ToVector3XZ(), position + rotation * bounds.GetBottomLeft2D().ToVector3XZ(), color);
-        Debug.DrawLine(position + rotation * bounds.GetTopRight2D().ToVector3XZ(), position + rotation * bounds.GetBottomRight2D().ToVector3XZ(), color);
-        Debug.DrawLine(position + rotation * bounds.GetBottomLeft2D().ToVector3XZ(), position + rotation * bounds.GetBottomRight2D().ToVector3XZ(), color);
+#if UNITY_EDITOR
+        UnityEditor.Handles.color = color;
+        Bounds tmp = DungeonGenerator.RotateBounds90Steps(bounds, rotation.eulerAngles.y);
+        UnityEditor.Handles.DrawWireCube(position + tmp.center + Vector3.up * tmp.size.y * 0.5f, tmp.size * 1.0001f);
+#endif
     }
 }

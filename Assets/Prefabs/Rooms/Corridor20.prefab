@@ -117,7 +117,7 @@ MonoBehaviour:
   - {fileID: 1118351014989649986}
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 10, y: 0, z: 20}
+    m_Extent: {x: 10, y: 1.5, z: 20}
 --- !u!1 &8854794657900748384
 GameObject:
   m_ObjectHideFlags: 0

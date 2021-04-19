@@ -98,7 +98,7 @@ MonoBehaviour:
   - {fileID: 4919024421320143445}
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 5, y: 0, z: 5}
+    m_Extent: {x: 5, y: 1.5, z: 5}
 --- !u!1001 &3260906469971757598
 PrefabInstance:
   m_ObjectHideFlags: 0
