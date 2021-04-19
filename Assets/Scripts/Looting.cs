@@ -1,15 +1,24 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider))]
 public class Looting : MonoBehaviour
 {
+    private List<Lootable> alreadyLooting;
+
+    void Start()
+    {
+        alreadyLooting = new List<Lootable>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         Lootable loot = other.GetComponent<Lootable>();
 
-        if (loot != null)
+        if (loot != null && !alreadyLooting.Contains(loot))
         {
+            alreadyLooting.Add(loot);
             StartCoroutine(SuckInItem(loot));
         }
     }
@@ -26,6 +35,7 @@ public class Looting : MonoBehaviour
             {
                 GameManager.instance.player1Stats.inventory.Add(loot.itemReference);
             }
+            alreadyLooting.Remove(loot);
             Destroy(loot.gameObject);
         }
         else
