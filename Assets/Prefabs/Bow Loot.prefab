@@ -15,6 +15,10 @@ PrefabInstance:
       propertyPath: isCoin
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1113906684458853952, guid: fc418df7340397b4fb6191c7f4e2c91b, type: 3}
+      propertyPath: lootType
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6200669154372114656, guid: fc418df7340397b4fb6191c7f4e2c91b, type: 3}
       propertyPath: m_IsActive
       value: 0

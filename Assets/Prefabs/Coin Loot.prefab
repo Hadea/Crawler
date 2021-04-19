@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a188a5283d6ce6d43a23d1c861183015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isCoin: 1
+  lootType: 1
   itemReference: {fileID: 0}
 --- !u!1 &7328185514222729545
 GameObject:

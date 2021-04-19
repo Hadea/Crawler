@@ -11,7 +11,6 @@ public class PlayerControl : MonoBehaviour
     public Transform rangedHand = null;
     private MeeleWeapon meeleWeapon;
     private RangedWeapon rangedWeapon;
-    public int ammo = 50;
 
     private float lastFired;
     private float chargeStart;
@@ -21,6 +20,7 @@ public class PlayerControl : MonoBehaviour
     public Transform hitArea;
 
     private NavMeshAgent agent;
+    private GameManager.PlayerStats stats;
 
     void Awake()
     {
@@ -32,6 +32,8 @@ public class PlayerControl : MonoBehaviour
     {
         agent.enabled = false;
         rangedWeapon?.ToggleRenderers(false);
+
+        stats = GameManager.instance.player1Stats;
     }
 
     void Update()
@@ -65,7 +67,7 @@ public class PlayerControl : MonoBehaviour
         }
         Rotation();
 
-        if (rangedWeapon != null && ammo > 0 && Time.time > lastFired + rangedWeapon.stats.cooldown)
+        if (rangedWeapon != null && stats.ammo > 0 && Time.time > lastFired + rangedWeapon.stats.cooldown)
         {
             if (Input.GetButtonDown("Fire2"))
             {
@@ -80,7 +82,7 @@ public class PlayerControl : MonoBehaviour
                 lastFired = Time.time;
                 rangedWeapon.Shoot(Time.time - chargeStart > rangedWeapon.stats.chargeTime);
                 chargeEffect?.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-                ammo--;
+                stats.ammo--;
 
                 meeleWeapon.ToggleRenderers(true);
                 rangedWeapon.ToggleRenderers(false);

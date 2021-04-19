@@ -27,13 +27,17 @@ public class Looting : MonoBehaviour
     {
         if (loot != null)
         {
-            if (loot.isCoin)
+            switch (loot.lootType)
             {
-                GameManager.instance.player1Stats.coins++;
-            }
-            else
-            {
-                GameManager.instance.player1Stats.inventory.Add(loot.itemReference);
+                case Lootable.LootTypes.Item:
+                    GameManager.instance.player1Stats.inventory.Add(loot.itemReference);
+                    break;
+                case Lootable.LootTypes.Coin:
+                    GameManager.instance.player1Stats.coins += loot.amount;
+                    break;
+                case Lootable.LootTypes.Arrow:
+                    GameManager.instance.player1Stats.ammo += loot.amount;
+                    break;
             }
             alreadyLooting.Remove(loot);
             Destroy(loot.gameObject);

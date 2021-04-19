@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
         public Inventory inventory;
         public Equipment equipment;
         public int coins = 0;
+        public int ammo = 0;
 
         public PlayerStats()
         {

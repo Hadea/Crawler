@@ -83,10 +83,11 @@ public class UIManager : MonoBehaviour
 
     void LateUpdate()
     {
-        scoreText.text = GameManager.instance.player1Stats.coins.ToString();
+        GameManager gameManager = GameManager.instance;
+        scoreText.text = gameManager.player1Stats.coins.ToString();
         if (PlayerControl.player != null)
         {
-            ammoText.text = PlayerControl.player.ammo.ToString();
+            ammoText.text = gameManager.player1Stats.ammo.ToString();
         }
     }
 

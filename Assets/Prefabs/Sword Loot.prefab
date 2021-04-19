@@ -63,6 +63,10 @@ PrefabInstance:
       propertyPath: itemReference
       value: 
       objectReference: {fileID: 11400000, guid: c5ad6e619fc2e294194aa1fa18fd4781, type: 2}
+    - target: {fileID: 5064985675186929379, guid: bbccdeba7762de9428b1741410d285ee, type: 3}
+      propertyPath: lootType
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4281985004001534054, guid: bbccdeba7762de9428b1741410d285ee, type: 3}
     - {fileID: 8624006145179923490, guid: bbccdeba7762de9428b1741410d285ee, type: 3}
