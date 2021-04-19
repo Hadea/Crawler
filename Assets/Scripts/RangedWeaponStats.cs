@@ -31,7 +31,7 @@ public class RangedWeaponStats : Item
     public void Shoot(Vector3 position, Quaternion rotation, bool charged)
     {
         GameObject newBullet = Instantiate(projectilePrefab, position, rotation);
-        BulletCollision bulletController = newBullet.GetComponent<BulletCollision>();
+        Projectile bulletController = newBullet.GetComponent<Projectile>();
         bulletController.speed = projectileSpeed * (charged ? chargeSpeedMultiplier : 1f);
         bulletController.damage = damage * (charged ? chargeDamageMultiplier : 1);
     }

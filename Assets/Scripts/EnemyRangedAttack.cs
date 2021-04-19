@@ -46,7 +46,7 @@ public class EnemyRangedAttack : MonoBehaviour, IEnemyAttackComponent
     {
         lastBulletFired = Time.time;
         GameObject newBullet = Instantiate(projectilePrefab, muzzlePosition.position, muzzlePosition.rotation);
-        BulletCollision bulletController = newBullet.GetComponent<BulletCollision>();
+        Projectile bulletController = newBullet.GetComponent<Projectile>();
         bulletController.speed = projectileSpeed;
         bulletController.damage = projectileDamage;
     }

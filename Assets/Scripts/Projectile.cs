@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class BulletCollision : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
     public float speed { set; private get; }
     public GameObject hitEffect;
