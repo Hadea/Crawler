@@ -45,6 +45,7 @@ public class FastIK : MonoBehaviour
         ResolveIK();
     }
 
+#if UNITY_EDITOR
     void OnDrawGizmos()
     {
         Transform current = transform;
@@ -59,7 +60,7 @@ public class FastIK : MonoBehaviour
             current = current.parent;
         }
     }
-
+#endif
     void OnDrawGizmosSelected()
     {
         //Gizmos.color = Color.Lerp(Color.black, Color.green, 0.5f);

@@ -77,32 +77,22 @@ public class DungeonGenerator : MonoBehaviour
                 openIndex = Random.Range(0, openConnections.Count);
                 randomConnectorStart = openConnections[openIndex];
 
-                int randomIndex = Random.Range(0, rooms.Length);
-
                 GameObject roomInstance = Instantiate(GetRandomRoom(weightsTotal));
                 newRoom = roomInstance.GetComponent<DungeonRoom>();
 
-                randomIndex = Random.Range(0, newRoom.roomConnectors.Length);
-                randomConnectorEnd = newRoom.roomConnectors[randomIndex];
+                int connectorIndex = Random.Range(0, newRoom.roomConnectors.Length);
+                randomConnectorEnd = newRoom.roomConnectors[connectorIndex];
 
                 PlaceNewRoom(randomConnectorStart, newRoom, randomConnectorEnd);
 
                 Bounds a = newRoom.bounds;
-                if (Mathf.Abs(newRoom.transform.rotation.eulerAngles.y) / 90f % 2f > 0.9f)
-                {
-                    a.size = a.size.ToVector3ZYX();
-                    a.center = a.center.ToVector3ZYX();
-                }
+                a = RotateBounds90Steps(a, newRoom.transform.rotation.eulerAngles.y);
                 a.size *= 0.999f;
                 a.center += newRoom.transform.position;
                 foreach (var otherRoom in generatedRooms)
                 {
                     Bounds b = otherRoom.bounds;
-                    if (Mathf.Abs(otherRoom.transform.rotation.eulerAngles.y) / 90f % 2f > 0.9f)
-                    {
-                        b.size = b.size.ToVector3ZYX();
-                        b.center = b.center.ToVector3ZYX();
-                    }
+                    b = RotateBounds90Steps(b, otherRoom.transform.rotation.eulerAngles.y);
                     b.size *= 0.999f;
                     b.center += otherRoom.transform.position;
 
@@ -134,6 +124,9 @@ public class DungeonGenerator : MonoBehaviour
         {
             AddDungeonNavMesh();
         }
+
+        MarkDirty();
+
         return true;
     }
 
@@ -193,11 +186,7 @@ public class DungeonGenerator : MonoBehaviour
         if (!closeOff)
         {
             Bounds a = newRoom.bounds;
-            if (Mathf.Abs(newRoom.transform.rotation.eulerAngles.y) / 90f % 2f > 0.9f)
-            {
-                a.size = a.size.ToVector3ZYX();
-                a.center = a.center.ToVector3ZYX();
-            }
+            a = RotateBounds90Steps(a, newRoom.transform.rotation.eulerAngles.y);
             a.center += newRoom.transform.position;
             dungeonBounds.Encapsulate(a);
         }
@@ -237,7 +226,7 @@ public class DungeonGenerator : MonoBehaviour
         }
         foreach (var room in generatedRooms)
         {
-            if (room != startingRoom)
+            if (room != startingRoom && room != null)
             {
                 room.transform.position = Vector3.one * 99999f;
                 Delete(room.gameObject);
@@ -248,6 +237,19 @@ public class DungeonGenerator : MonoBehaviour
         if (dungeonNavMesh != null)
         {
             Delete(dungeonNavMesh);
+        }
+
+        MarkDirty();
+    }
+
+    private void MarkDirty()
+    {
+        if (Application.isEditor && !Application.isPlaying)
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(gameObject);
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+#endif
         }
     }
 
@@ -274,5 +276,30 @@ public class DungeonGenerator : MonoBehaviour
         {
             DestroyImmediate(obj);
         }
+    }
+
+    public static float ToPositiveAngle(float angle)
+    {
+        if (angle < 0f)
+        {
+            angle = 360f - Mathf.Abs(angle);
+        }
+        if (angle > 360f)
+        {
+            angle = angle % 360f;
+        }
+        return angle;
+    }
+
+    public static Bounds RotateBounds90Steps(Bounds bounds, float angle)
+    {
+        int times90 = Mathf.RoundToInt(ToPositiveAngle(angle)) / 90;
+        for (int i = 0; i < times90; i++)
+        {
+            bounds.center = Quaternion.Euler(Vector3.up * 90f) * bounds.center;
+            bounds.extents = bounds.extents.ToVector3ZYX();
+        }
+
+        return bounds;
     }
 }

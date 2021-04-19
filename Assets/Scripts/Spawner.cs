@@ -12,6 +12,8 @@ public class Spawner : MonoBehaviour
 
     [SerializeField]
     private float activeRange = 50f;
+    [SerializeField]
+    private bool showRange = false;
 
     [SerializeField]
     private Transform spawnArea = null;
@@ -42,11 +44,14 @@ public class Spawner : MonoBehaviour
         }
     }
 
+#if UNITY_EDITOR
     void OnDrawGizmosSelected()
     {
-#if UNITY_EDITOR
-        UnityEditor.Handles.color = Color.yellow;
-        UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, activeRange);
-#endif
+        if (showRange)
+        {
+            UnityEditor.Handles.color = Color.yellow;
+            UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.up, activeRange);
+        }
     }
+#endif
 }
